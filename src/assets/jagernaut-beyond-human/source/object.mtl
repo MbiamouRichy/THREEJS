@@ -1,0 +1,23 @@
+newmtl material1
+Ka 1.000 1.000 1.000
+Kd 0.800 0.800 0.800
+Ks 0.000 0.000 0.000
+map_Kd Boots_normal.jpg
+
+newmtl material2
+Ka 1.000 1.000 1.000
+Kd 0.800 0.800 0.800
+Ks 0.000 0.000 0.000
+map_Kd Boots_opacity.jpg
+
+newmtl material3
+Ka 1.000 1.000 1.000
+Kd 0.800 0.800 0.800
+Ks 0.000 0.000 0.000
+map_Kd Boots_roughness.jpg
+
+newmtl material4
+Ka 1.000 1.000 1.000
+Kd 0.800 0.800 0.800
+Ks 0.000 0.000 0.000
+map_Kd Gun_ao.jpg

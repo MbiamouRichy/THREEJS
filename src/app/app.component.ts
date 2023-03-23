@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 // @ts-ignore
 import * as THREE from 'three';
 // @ts-ignore
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-// @ts-ignore
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 
 @Component({
@@ -38,7 +36,7 @@ export class AppComponent {
       document.body.appendChild(container);
 
       camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 2000);
-      camera.position.z = -300;
+      camera.position.z = 140;
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -48,7 +46,7 @@ export class AppComponent {
       const ambientLight = new THREE.AmbientLight(0xffffff);
       scene.add(ambientLight);
 
-      const pointLight = new THREE.PointLight(0xffffff, 0.8);
+      const pointLight = new THREE.PointLight(0xffffff);
       scene.add(pointLight);
 
       // manager
@@ -74,7 +72,7 @@ export class AppComponent {
 
       const textureLoader = new THREE.TextureLoader(manager);
 
-      const texture = textureLoader.load('../assets/jagenaut-beyond-human/textures/alpha.jpg');
+      const texture = textureLoader.load('../assets/jagernaut-beyond-human/textures/Material.001_albedo.jpg');
       // model
 
       function onProgress(xhr: any) {
@@ -90,9 +88,14 @@ export class AppComponent {
       function onError() { }
 
       const loader = new FBXLoader(manager);
-      loader.load('../assets/jagenaut-beyond-human/source/Pose_scene.fbx', function (obj:any) {
+      loader.load('../assets/jagernaut-beyond-human/source/Pose_scene.fbx', function (obj:any) {
         object = obj;
-      }, onProgress, onError);
+
+        window.document.addEventListener('scroll', ()=>{
+          object.rotation.y +=  5;
+          object.position.y = -window.scrollY;
+        })
+      }, onProgress, onError)
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -124,20 +127,15 @@ export class AppComponent {
 
     }
 
-    // control
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set( 0, 0.5, 0 );
-    controls.update();
-    controls.enablePan = true;
-    controls.enableDamping = true;
-
-
     function animate() {
       requestAnimationFrame(animate);
       render();
 
     }
     function render() {
+      if(object){
+        object.rotationy +=45
+      }
       renderer.render( scene, camera );
     }
 
