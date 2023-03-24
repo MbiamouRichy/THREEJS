@@ -1,0 +1,82 @@
+// map
+@use "sass:map";
+
+// base
+$letters-colors: (
+  "c1": #070707,
+  "c2": #3d3d3d,
+  "c3": #525252,
+  "c4": #696969,
+  "c5": #858585,
+  "c6": #c9c9c9,
+  "c7": #fff,
+);
+// loader
+
+.loader {
+  position: relative;
+  z-index: 5;
+  perspective: 2000px;
+  height: 100vh;
+  width: 100vw;
+  display: none;
+  background-color: black;
+  text-align: center;
+}
+.show{
+  display: inline-block;
+}
+.base,
+.letters {
+font-size: 4rem;
+color: transparent;
+font-weight: bold;
+}
+.letters {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: funky 1.5s ease-in-out infinite;
+text-shadow:
+-1px -1px 0 #222,
+ 1px -1px 0 #222,
+-1px 1px 0 #222,
+ 1px 1px 0 #222,
+ 4px 4px 0 #00000033;
+}
+@keyframes funky {
+50% {
+  transform: translate(-50%, -70%);
+}
+}
+
+
+@for $i from 1 through 7 {
+.fl-#{$i} {
+  animation-delay: - calc($i / 10 * 1s);
+  color: map.get($letters-colors, "c#{$i}")
+}
+}
+
+
+//  Les variables
+
+$color1: white;
+$color2: black;
+// Le Logo
+.logo{
+   position: absolute;
+   top: 50px;
+   left: 50px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   span{
+    font-size: 1.2rem;
+    color: $color2;
+    font-weight: bold;
+    line-height: 100%;
+   }
+}

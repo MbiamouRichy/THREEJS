@@ -12,7 +12,24 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 export class AppComponent {
   title = 'THREEJS';
 
-  ngOnInit(){
+  ngOnInit() {
+
+    // le loader
+    // Afficher le loader
+    let loader =  document.querySelector('.loader')as HTMLDivElement;
+   loader.classList.add('show');
+
+    // Charger les données
+    fetch('../../angular.json').then(function (response) {
+      // Masquer le loader
+      setTimeout(function() {
+      loader.classList.remove('show');
+      }, 2000)
+    });
+
+
+
+    // les objets 3d
     let container: any;
 
     let camera: any;
@@ -59,7 +76,7 @@ export class AppComponent {
 
         });
 
-        object.position.y = 0;
+        object.position.y = -25;
         object.position.x = 0;
 
         scene.add(object);
@@ -88,13 +105,11 @@ export class AppComponent {
       function onError() { }
 
       const loader = new FBXLoader(manager);
-      loader.load('../assets/jagernaut-beyond-human/source/Pose_scene.fbx', function (obj:any) {
+      loader.load('../assets/jagernaut-beyond-human/source/Pose_scene.fbx', function (obj: any) {
         object = obj;
+        // window.addEventListener('wheel', ()=>{
+        // })
 
-        window.document.addEventListener('scroll', ()=>{
-          object.rotation.y +=  5;
-          object.position.y = -window.scrollY;
-        })
       }, onProgress, onError)
 
       //renderer
@@ -133,10 +148,10 @@ export class AppComponent {
 
     }
     function render() {
-      if(object){
-        object.rotationy +=45
+      if (object) {
+        object.rotation.y += 0.05;
       }
-      renderer.render( scene, camera );
+      renderer.render(scene, camera);
     }
 
   }
