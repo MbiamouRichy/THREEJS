@@ -58,7 +58,7 @@ export class AppComponent {
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
-      renderer.setClearColor(0x000000, 0);
+      renderer.setClearColor(0xcccccc, 0);
       scene = new THREE.Scene();
 
       // Light

@@ -16,6 +16,7 @@ $color1: white;
 $color2: black;
 $color3: #222;
 
+
 // Les mixins
 @mixin absolute-div($top, $right, $bottom, $left) {
   position: absolute;
@@ -24,7 +25,13 @@ $color3: #222;
   bottom: $bottom;
   left: $left;
 }
-
+@mixin relative-div($top, $right, $bottom, $left) {
+  position: relative;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
 // Les placeholders
 %div-row {
   display: flex;
@@ -47,9 +54,9 @@ $color3: #222;
   background-color: $color2;
   text-align: center;
 }
-.show {
-  display: inline-block;
-}
+// .show {
+//   display: inline-block;
+// }
 .base,
 .letters, .bottom{
   font-size: 4rem;
@@ -112,13 +119,12 @@ $color3: #222;
     overflow: hidden;
 
     span {
-      position: relative;
-      top: 1.3rem;
-      font-size: 1.2rem;
+      @include relative-div(2rem, none, none, none);
+      font-size: 1rem;
       color: $color2;
       font-weight: bold;
       line-height: 100%;
-      animation: appear-top 3s ease-in-out forwards;
+      animation: appear-top 2s ease-in-out forwards;
     }
   }
 }
@@ -127,4 +133,64 @@ $color3: #222;
   to {
     top: 0;
   }
+}
+
+/*================================ Big text ================================*/
+.big-text{
+  @include absolute-div(40%, none, none, 50%);
+  transform: translate(-50%, -50%);
+  font-size:calc(150vw / 10);
+  @extend %div-col;
+  width: 80vw;
+  line-height: 100%;
+  color: $color1;
+  animation: scale 1s ease-in forwards;
+
+
+  div{
+    @extend %div-row;
+    width: 100%;
+    color: $color2;
+
+  }
+  .text-left{
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+}
+
+@keyframes scale {
+  from{
+    scale: 0;
+  }
+  to{
+    scale: 1;
+  }
+}
+
+/*========================================== EXPLORE =============================*/
+.explore{
+  @include absolute-div(none, none, 20%, 0%);
+ @extend %div-col;
+ align-items: flex-end;
+ border: 1px solid red;
+ p{
+  font-size: 0.7rem;
+  line-height: 1.125rem;
+  color: $color2;
+  padding-left: 5rem;
+  margin-bottom: 1.25rem;
+ border: 1px solid red;
+
+ }
+ .btn-explore{
+  border-bottom: 0.5px solid $color2;
+  color: $color2;
+  width: 6.25rem;
+  text-align: right;
+  font-size: 0.7rem;
+  line-height: 1.125rem;
+
+
+ }
 }
