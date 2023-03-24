@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 // @ts-ignore
 import * as THREE from 'three';
 // @ts-ignore
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+// @ts-ignore
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,22 +15,20 @@ export class AppComponent {
 
   ngOnInit() {
 
-    // le loader
+    /*====================== LOADER ======================*/
     // Afficher le loader
     let loader =  document.querySelector('.loader')as HTMLDivElement;
    loader.classList.add('show');
 
     // Charger les données
-    fetch('../../angular.json').then(function (response) {
+    fetch('../angular.json').then(function (response) {
       // Masquer le loader
       setTimeout(function() {
       loader.classList.remove('show');
       }, 2000)
     });
 
-
-
-    // les objets 3d
+    /*============================ OBJET 3D ==================*/
     let container: any;
 
     let camera: any;
@@ -37,14 +36,16 @@ export class AppComponent {
     let renderer: any;
 
     let mouseX = 0, mouseY = 0;
+    let percent_load: any;
 
     let windowHalfX = window.innerWidth / 2;
     let windowHalfY = window.innerHeight / 2;
+    let bottom = document.querySelector('.bottom') as HTMLDivElement;
 
     let object: any;
-    let mixer: any
     init();
     animate();
+
 
 
     function init() {
@@ -60,20 +61,33 @@ export class AppComponent {
       renderer.setClearColor(0x000000, 0);
       scene = new THREE.Scene();
 
+      // Light
       const ambientLight = new THREE.AmbientLight(0xffffff);
       scene.add(ambientLight);
 
       const pointLight = new THREE.PointLight(0xffffff);
       scene.add(pointLight);
 
+      const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+				hemiLight.position.set( 0, 20, 0 );
+				scene.add( hemiLight );
+
+				const dirLight = new THREE.DirectionalLight( 0xffffff );
+				dirLight.position.set( - 3, 10, - 10 );
+				dirLight.castShadow = true;
+				dirLight.shadow.camera.top = 2;
+				dirLight.shadow.camera.bottom = - 2;
+				dirLight.shadow.camera.left = - 2;
+				dirLight.shadow.camera.right = 2;
+				dirLight.shadow.camera.near = 0.1;
+				dirLight.shadow.camera.far = 40;
+				scene.add( dirLight );
       // manager
 
       function loadModel() {
 
         object.traverse(function (child: any) {
-
           if (child.isMesh) child.material.map = texture;
-
         });
 
         object.position.y = -25;
@@ -91,17 +105,16 @@ export class AppComponent {
 
       const texture = textureLoader.load('../assets/jagernaut-beyond-human/textures/Material.001_albedo.jpg');
       // model
-
       function onProgress(xhr: any) {
 
         if (xhr.lengthComputable) {
-
-          const percentComplete = xhr.loaded / xhr.total * 100;
-          console.log('model ' + Math.round(percentComplete) + '% downloaded');
+          const percentComplete: number = xhr.loaded / xhr.total * 100;
+          percent_load = Math.round(percentComplete);
+          bottom.textContent = percent_load + '%';
+          console.log('model ' + percent_load + '% downloaded');
         }
-
+        return percent_load;
       }
-
       function onError() { }
 
       const loader = new FBXLoader(manager);
@@ -122,7 +135,6 @@ export class AppComponent {
       window.addEventListener('resize', onWindowResize);
 
     }
-
     function onWindowResize() {
 
       windowHalfX = window.innerWidth / 2;
@@ -149,7 +161,7 @@ export class AppComponent {
     }
     function render() {
       if (object) {
-        object.rotation.y += 0.05;
+        object.rotation.y += 0.01;
       }
       renderer.render(scene, camera);
     }

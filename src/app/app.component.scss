@@ -1,82 +1,130 @@
 // map
 @use "sass:map";
 
-// base
 $letters-colors: (
-  "c1": #070707,
-  "c2": #3d3d3d,
-  "c3": #525252,
-  "c4": #696969,
+  "c1": #ede9e9,
+  "c2": #919090,
+  "c3": #6a6969,
+  "c4": #6a6969,
   "c5": #858585,
   "c6": #c9c9c9,
   "c7": #fff,
 );
-// loader
+
+//  Les variables
+$color1: white;
+$color2: black;
+$color3: #222;
+
+// Les mixins
+@mixin absolute-div($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// Les placeholders
+%div-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+%div-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/*===============================Loader========================*/
 
 .loader {
   position: relative;
-  z-index: 5;
-  perspective: 2000px;
+  z-index: 100;
   height: 100vh;
   width: 100vw;
   display: none;
-  background-color: black;
+  background-color: $color2;
   text-align: center;
 }
-.show{
+.show {
   display: inline-block;
 }
 .base,
-.letters {
-font-size: 4rem;
-color: transparent;
-font-weight: bold;
-}
-.letters {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: funky 1.5s ease-in-out infinite;
-text-shadow:
--1px -1px 0 #222,
- 1px -1px 0 #222,
--1px 1px 0 #222,
- 1px 1px 0 #222,
- 4px 4px 0 #00000033;
-}
-@keyframes funky {
-50% {
-  transform: translate(-50%, -70%);
-}
+.letters, .bottom{
+  font-size: 4rem;
+  color: transparent;
+  font-weight: bold;
 }
 
+.letters {
+  @include absolute-div(50%, none, none, 50%);
+  animation: loader 1.5s ease-in-out infinite;
+  text-shadow:
+   -1px -1px 0 $color3,
+   1px -1px 0 $color3,
+    -1px 1px 0 $color3,
+    1px 1px 0 $color3,
+     4px 4px 0 #00000033;
+}
+@keyframes loader {
+  50% {
+    transform: translate(-50%, -70%);
+  }
+}
 
 @for $i from 1 through 7 {
-.fl-#{$i} {
-  animation-delay: - calc($i / 10 * 1s);
-  color: map.get($letters-colors, "c#{$i}")
+  .fl-#{$i} {
+    animation-delay: - calc($i / 10 * 1s);
+    color: map.get($letters-colors, "c#{$i}");
+  }
 }
+.letters, .bottom, .copyright{
+  transform: translate(-50%, -50%);
+}
+// counter
+.bottom{
+  @include absolute-div(none, none, 5%, 50%);
+  color: $color1;
 }
 
+.copyright{
+  font-size: 1rem;
+  font-weight: bold;
+  color: $color1;
+  @include absolute-div(none, none, 3%, 50%);
+  a{
+    text-decoration: $color1;
+    color: $color1;
+  }
+}
 
-//  Les variables
-
-$color1: white;
-$color2: black;
 // Le Logo
-.logo{
-   position: absolute;
-   top: 50px;
-   left: 50px;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   span{
-    font-size: 1.2rem;
-    color: $color2;
-    font-weight: bold;
-    line-height: 100%;
-   }
+.logo {
+  @include absolute-div(50px, none, none, 50px);
+  z-index: 5;
+
+  a {
+    text-decoration: none;
+    @extend %div-col;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    span {
+      position: relative;
+      top: 1.3rem;
+      font-size: 1.2rem;
+      color: $color2;
+      font-weight: bold;
+      line-height: 100%;
+      animation: appear-top 3s ease-in-out forwards;
+    }
+  }
+}
+
+@keyframes appear-top {
+  to {
+    top: 0;
+  }
 }
