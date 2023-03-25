@@ -55,12 +55,11 @@ export class AppComponent {
       container = document.createElement('div');
       document.body.appendChild(container);
 
-      camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 60;
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
-      renderer.setClearColor(0xcccccc, 0);
       scene = new THREE.Scene();
 
       // Light
@@ -70,12 +69,8 @@ export class AppComponent {
       const pointLight = new THREE.PointLight(0xffffff);
       scene.add(pointLight);
 
-      const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-				hemiLight.position.set( 0, 20, 0 );
-				scene.add( hemiLight );
-
-				const dirLight = new THREE.DirectionalLight( 0xffffff );
-				dirLight.position.set( - 3, 10, - 10 );
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.5);
+				dirLight.position.set( - 3, 10, 10);
 				dirLight.castShadow = true;
 				dirLight.shadow.camera.top = 2;
 				dirLight.shadow.camera.bottom = - 2;
@@ -85,27 +80,28 @@ export class AppComponent {
 				dirLight.shadow.camera.far = 40;
 				scene.add( dirLight );
 
-      // // model Girl
-      // function onProgress(xhr: any) {
+      // model Girl
+      function onProgress(xhr: any) {
 
-      //   if (xhr.lengthComputable) {
-      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
-      //     percent_load = Math.round(percentComplete);
-      //     bottom.textContent = percent_load + '%';
-      //     console.log('model ' + percent_load + '% downloaded');
-      //   }
-      //   return percent_load;
-      // }
-      // function onError() { }
+        if (xhr.lengthComputable) {
+          const percentComplete: number = xhr.loaded / xhr.total * 100;
+          percent_load = Math.round(percentComplete);
+          bottom.textContent = percent_load + '%';
+          console.log('model ' + percent_load + '% downloaded');
+        }
+        return percent_load;
+      }
+      function onError() { }
 
-      // const loader = new FBXLoader();
-      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-      //   object = obj;
-      //   // window.addEventListener('wheel', ()=>{
-      //   // })
-      //   scene.add(object);
+      const loader = new FBXLoader();
+      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+        object = obj;
+        // window.addEventListener('wheel', ()=>{
+        // })
+        object.rotation.y = 135;
+        scene.add(object);
 
-      // }, onProgress, onError)
+      }, onProgress, onError)
 
 
       // Model Rock
@@ -119,9 +115,10 @@ export class AppComponent {
 
         });
 
-        objectRock.position.y = -50;
-        objectRock.position.x = -100;
-        objectRock.position.x = 200;
+        objectRock.position.y = -15;
+        objectRock.position.x = 0;
+        objectRock.position.x = 0;
+        objectRock.scale.set(0.07, 0.05, 0.03)
 
 
         scene.add(objectRock);
@@ -133,9 +130,9 @@ export class AppComponent {
 
     const textureLoader = new THREE.TextureLoader(manager);
 
-    const texture = textureLoader.load('../assets/sandstone-cliff/source/rock_10/Low_Bake1_pbrs2a_normal.jpg');
+    const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
 
-    // model
+     // model
       const loaderRock = new FBXLoader(manager);
       loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
         objectRock = obj;
@@ -177,7 +174,7 @@ export class AppComponent {
     }
     function render() {
       if (object) {
-        object.rotation.y += 0.1;
+        object.position.y = 8.9;
       }
       renderer.render(scene, camera);
     }

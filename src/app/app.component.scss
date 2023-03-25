@@ -42,7 +42,17 @@ $color3: #222;
   flex-direction: column;
   align-items: flex-start;
 }
-/*===============================Loader========================*/
+/*================================= Bg-gradient ===========================*/
+#bg-gradient{
+  background: radial-gradient(circle,$color1, rgba(255,148,95,1));
+  background-position: center;
+  mix-blend-mode: exclusion;
+  @include absolute-div(0, none, none, 0);
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+}
+/*=================================== Loader ==============================*/
 
 .loader {
   position: relative;
