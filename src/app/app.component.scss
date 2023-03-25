@@ -16,7 +16,6 @@ $color1: white;
 $color2: black;
 $color3: #222;
 
-
 // Les mixins
 @mixin absolute-div($top, $right, $bottom, $left) {
   position: absolute;
@@ -58,7 +57,8 @@ $color3: #222;
 //   display: inline-block;
 // }
 .base,
-.letters, .bottom{
+.letters,
+.bottom {
   font-size: 4rem;
   color: transparent;
   font-weight: bold;
@@ -67,12 +67,8 @@ $color3: #222;
 .letters {
   @include absolute-div(50%, none, none, 50%);
   animation: loader 1.5s ease-in-out infinite;
-  text-shadow:
-   -1px -1px 0 $color3,
-   1px -1px 0 $color3,
-    -1px 1px 0 $color3,
-    1px 1px 0 $color3,
-     4px 4px 0 #00000033;
+  text-shadow: -1px -1px 0 $color3, 1px -1px 0 $color3, -1px 1px 0 $color3,
+    1px 1px 0 $color3, 4px 4px 0 #00000033;
 }
 @keyframes loader {
   50% {
@@ -82,25 +78,27 @@ $color3: #222;
 
 @for $i from 1 through 7 {
   .fl-#{$i} {
-    animation-delay: - calc($i / 10 * 1s);
+    animation-delay: -calc($i / 10 * 1s);
     color: map.get($letters-colors, "c#{$i}");
   }
 }
-.letters, .bottom, .copyright{
+.letters,
+.bottom,
+.copyright {
   transform: translate(-50%, -50%);
 }
 // counter
-.bottom{
+.bottom {
   @include absolute-div(none, none, 5%, 50%);
   color: $color1;
 }
 
-.copyright{
+.copyright {
   font-size: 1rem;
   font-weight: bold;
   color: $color1;
   @include absolute-div(none, none, 3%, 50%);
-  a{
+  a {
     text-decoration: $color1;
     color: $color1;
   }
@@ -136,61 +134,92 @@ $color3: #222;
 }
 
 /*================================ Big text ================================*/
-.big-text{
+.big-text {
   @include absolute-div(40%, none, none, 50%);
   transform: translate(-50%, -50%);
-  font-size:calc(150vw / 10);
+  font-size: calc(150vw / 10);
   @extend %div-col;
   width: 80vw;
   line-height: 100%;
   color: $color1;
   animation: scale 1s ease-in forwards;
 
-
-  div{
+  div {
     @extend %div-row;
     width: 100%;
     color: $color2;
-
   }
-  .text-left{
+  .text-left {
     align-items: flex-end;
     justify-content: flex-end;
   }
 }
 
 @keyframes scale {
-  from{
+  from {
     scale: 0;
   }
-  to{
+  to {
     scale: 1;
   }
 }
 
 /*========================================== EXPLORE =============================*/
-.explore{
-  @include absolute-div(none, none, 20%, 0%);
- @extend %div-col;
- align-items: flex-end;
- border: 1px solid red;
- p{
-  font-size: 0.7rem;
-  line-height: 1.125rem;
-  color: $color2;
-  padding-left: 5rem;
-  margin-bottom: 1.25rem;
- border: 1px solid red;
+.explore {
+  @include absolute-div(none, none, 20%, 5%);
+  @extend %div-col;
+  align-items: flex-end;
+  z-index: 5;
+  animation: block-left 2s ease forwards;
 
+  p {
+    font-size: 0.7rem;
+    line-height: 1.125rem;
+    color: $color2;
+    padding-left: 5rem;
+    margin-bottom: 1.25rem;
+  }
+  .btn-explore {
+    border-bottom: 0.5px solid $color2;
+    color: $color2;
+    width: 6.25rem;
+    text-align: right;
+    font-size: 0.7rem;
+    line-height: 1.125rem;
+    padding-bottom: 0.3rem;
+
+  }
+}
+@keyframes block-left {
+  from{
+    left: -30%;
+  }
+  to{
+    left: 5%;
+  }
+}
+/*====================================== SOCIAL MEDIA ==================================*/
+.socialMedia-icon {
+  @include absolute-div(none, 5%, 5%, none);
+  @extend %div-row;
+  z-index: 5;
+  gap: 1rem;
+  a {
+    width: 20px;
+    height: 20px;
+    animation: svg-appear 2s ease-in forwards;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+@keyframes svg-appear {
+ from{
+  scale: 0;
  }
- .btn-explore{
-  border-bottom: 0.5px solid $color2;
-  color: $color2;
-  width: 6.25rem;
-  text-align: right;
-  font-size: 0.7rem;
-  line-height: 1.125rem;
-
-
+ to{
+  scale: 1;
  }
 }

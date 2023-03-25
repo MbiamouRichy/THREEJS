@@ -43,6 +43,8 @@ export class AppComponent {
     let bottom = document.querySelector('.bottom') as HTMLDivElement;
 
     let object: any;
+    let objectRock: any;
+
     init();
     animate();
 
@@ -54,7 +56,7 @@ export class AppComponent {
       document.body.appendChild(container);
 
       camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 2000);
-      camera.position.z = 140;
+      camera.position.z = 60;
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -82,48 +84,62 @@ export class AppComponent {
 				dirLight.shadow.camera.near = 0.1;
 				dirLight.shadow.camera.far = 40;
 				scene.add( dirLight );
+
+      // // model Girl
+      // function onProgress(xhr: any) {
+
+      //   if (xhr.lengthComputable) {
+      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
+      //     percent_load = Math.round(percentComplete);
+      //     bottom.textContent = percent_load + '%';
+      //     console.log('model ' + percent_load + '% downloaded');
+      //   }
+      //   return percent_load;
+      // }
+      // function onError() { }
+
+      // const loader = new FBXLoader();
+      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+      //   object = obj;
+      //   // window.addEventListener('wheel', ()=>{
+      //   // })
+      //   scene.add(object);
+
+      // }, onProgress, onError)
+
+
+      // Model Rock
       // manager
 
       function loadModel() {
 
-        object.traverse(function (child: any) {
-          if (child.isMesh) child.material.map = texture;
+        objectRock.traverse(function (child: any) {
+
+            if (child.isMesh) child.material.map = texture;
+
         });
 
-        object.position.y = -25;
-        object.position.x = 0;
+        objectRock.position.y = -50;
+        objectRock.position.x = -100;
+        objectRock.position.x = 200;
 
-        scene.add(object);
 
-      }
+        scene.add(objectRock);
 
-      const manager = new THREE.LoadingManager(loadModel);
+    }
 
-      // texture
+    const manager = new THREE.LoadingManager(loadModel);
+    // texture Rock
 
-      const textureLoader = new THREE.TextureLoader(manager);
+    const textureLoader = new THREE.TextureLoader(manager);
 
-      const texture = textureLoader.load('../assets/jagernaut-beyond-human/textures/Material.001_albedo.jpg');
-      // model
-      function onProgress(xhr: any) {
+    const texture = textureLoader.load('../assets/sandstone-cliff/source/rock_10/Low_Bake1_pbrs2a_normal.jpg');
 
-        if (xhr.lengthComputable) {
-          const percentComplete: number = xhr.loaded / xhr.total * 100;
-          percent_load = Math.round(percentComplete);
-          bottom.textContent = percent_load + '%';
-          console.log('model ' + percent_load + '% downloaded');
-        }
-        return percent_load;
-      }
-      function onError() { }
-
-      const loader = new FBXLoader(manager);
-      loader.load('../assets/jagernaut-beyond-human/source/Pose_scene.fbx', function (obj: any) {
-        object = obj;
-        // window.addEventListener('wheel', ()=>{
-        // })
-
-      }, onProgress, onError)
+    // model
+      const loaderRock = new FBXLoader(manager);
+      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+        objectRock = obj;
+      },)
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -161,7 +177,7 @@ export class AppComponent {
     }
     function render() {
       if (object) {
-        object.rotation.y += 0.01;
+        object.rotation.y += 0.1;
       }
       renderer.render(scene, camera);
     }
