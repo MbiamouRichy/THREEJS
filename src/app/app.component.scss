@@ -15,6 +15,7 @@ $letters-colors: (
 $color1: white;
 $color2: black;
 $color3: #222;
+$color4: rgba(255,148,95,1);
 
 // Les mixins
 @mixin absolute-div($top, $right, $bottom, $left) {
@@ -44,7 +45,7 @@ $color3: #222;
 }
 /*================================= Bg-gradient ===========================*/
 #bg-gradient{
-  background: radial-gradient(circle,$color1, rgba(255,148,95,1));
+  background: radial-gradient(circle,$color1, $color4);
   background-position: center;
   mix-blend-mode: exclusion;
   @include absolute-div(0, none, none, 0);
@@ -60,7 +61,7 @@ $color3: #222;
   height: 100vh;
   width: 100vw;
   display: none;
-  background-color: $color2;
+  background-color:  $color4;
   text-align: center;
 }
 // .show {
@@ -76,9 +77,10 @@ $color3: #222;
 
 .letters {
   @include absolute-div(50%, none, none, 50%);
+  transform: translate(-50%, -50%);
   animation: loader 1.5s ease-in-out infinite;
-  text-shadow: -1px -1px 0 $color3, 1px -1px 0 $color3, -1px 1px 0 $color3,
-    1px 1px 0 $color3, 4px 4px 0 #00000033;
+  -webkit-text-stroke: 1px $color2;
+
 }
 @keyframes loader {
   50% {
@@ -86,13 +88,15 @@ $color3: #222;
   }
 }
 
+
 @for $i from 1 through 7 {
   .fl-#{$i} {
-    animation-delay: -calc($i / 10 * 1s);
-    color: map.get($letters-colors, "c#{$i}");
+    animation-delay: - calc($i / 10 * 1s);
+    color: map.get($letters-colors, "c#{$i}")
   }
 }
-.letters,
+
+
 .bottom,
 .copyright {
   transform: translate(-50%, -50%);
@@ -101,6 +105,11 @@ $color3: #222;
 .bottom {
   @include absolute-div(none, none, 5%, 50%);
   color: $color1;
+  text-shadow: -1px -1px 0 $color3,
+  1px -1px 0 $color3,
+   -1px 1px 0 $color3,
+   1px 1px 0 $color3,
+    4px 4px 0 $color3;
 }
 
 .copyright {
@@ -133,6 +142,8 @@ $color3: #222;
       font-weight: bold;
       line-height: 100%;
       animation: appear-top 2s ease-in-out forwards;
+    color: $color1;
+
     }
   }
 }
@@ -151,13 +162,16 @@ $color3: #222;
   @extend %div-col;
   width: 80vw;
   line-height: 100%;
-  color: $color1;
-  animation: scale 1s ease-in forwards;
+  -webkit-text-stroke: 1px $color2;
+
 
   div {
     @extend %div-row;
     width: 100%;
-    color: $color2;
+    color: $color1;
+    overflow: hidden;
+    animation: scale 1s ease-in forwards;
+
   }
   .text-left {
     align-items: flex-end;
@@ -168,9 +182,11 @@ $color3: #222;
 @keyframes scale {
   from {
     scale: 0;
+    opacity: 0;
   }
   to {
     scale: 1;
+    opacity: 1;
   }
 }
 
@@ -185,18 +201,25 @@ $color3: #222;
   p {
     font-size: 0.7rem;
     line-height: 1.125rem;
-    color: $color2;
+    color: $color1;
     padding-left: 5rem;
     margin-bottom: 1.25rem;
+    text-shadow: -4px -4px 1 $color2,
+    -2px 2px 1 $color2;
+
   }
   .btn-explore {
-    border-bottom: 0.5px solid $color2;
+    border-bottom: 0.5px solid $color1;
     color: $color2;
     width: 6.25rem;
     text-align: right;
     font-size: 0.7rem;
     line-height: 1.125rem;
     padding-bottom: 0.3rem;
+    color: $color1;
+    text-shadow: -2px 2px 1 $color2
+    -4px 4px 1 $color2;
+    cursor: pointer;
 
   }
 }
@@ -218,10 +241,12 @@ $color3: #222;
     width: 20px;
     height: 20px;
     animation: svg-appear 2s ease-in forwards;
-
     svg {
       width: 100%;
       height: 100%;
+      fill: $color1;
+
+
     }
   }
 }

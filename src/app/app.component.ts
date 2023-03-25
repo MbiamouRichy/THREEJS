@@ -17,14 +17,14 @@ export class AppComponent {
 
     /*====================== LOADER ======================*/
     // Afficher le loader
-    let loader =  document.querySelector('.loader')as HTMLDivElement;
-   loader.classList.add('show');
+    let loader = document.querySelector('.loader') as HTMLDivElement;
+    loader.classList.add('show');
 
     // Charger les données
     fetch('../angular.json').then(function (response) {
       // Masquer le loader
-      setTimeout(function() {
-      loader.classList.remove('show');
+      setTimeout(function () {
+        loader.classList.remove('show');
       }, 2000)
     });
 
@@ -66,19 +66,9 @@ export class AppComponent {
       const ambientLight = new THREE.AmbientLight(0xffffff);
       scene.add(ambientLight);
 
-      const pointLight = new THREE.PointLight(0xffffff);
+      const pointLight = new THREE.PointLight(0xffffff, 0.3);
       scene.add(pointLight);
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.5);
-				dirLight.position.set( - 3, 10, 10);
-				dirLight.castShadow = true;
-				dirLight.shadow.camera.top = 2;
-				dirLight.shadow.camera.bottom = - 2;
-				dirLight.shadow.camera.left = - 2;
-				dirLight.shadow.camera.right = 2;
-				dirLight.shadow.camera.near = 0.1;
-				dirLight.shadow.camera.far = 40;
-				scene.add( dirLight );
 
       // model Girl
       function onProgress(xhr: any) {
@@ -98,7 +88,7 @@ export class AppComponent {
         object = obj;
         // window.addEventListener('wheel', ()=>{
         // })
-        object.rotation.y = 135;
+        object.rotation.y = 135
         scene.add(object);
 
       }, onProgress, onError)
@@ -111,32 +101,48 @@ export class AppComponent {
 
         objectRock.traverse(function (child: any) {
 
-            if (child.isMesh) child.material.map = texture;
+          if (child.isMesh) child.material.map = texture;
 
         });
 
         objectRock.position.y = -15;
-        objectRock.position.x = 0;
         objectRock.position.x = 0;
         objectRock.scale.set(0.07, 0.05, 0.03)
 
 
         scene.add(objectRock);
 
-    }
+      }
 
-    const manager = new THREE.LoadingManager(loadModel);
-    // texture Rock
+      const manager = new THREE.LoadingManager(loadModel);
+      // texture Rock
 
-    const textureLoader = new THREE.TextureLoader(manager);
+      const textureLoader = new THREE.TextureLoader(manager);
 
-    const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
 
-     // model
+      // model Rock
       const loaderRock = new FBXLoader(manager);
       loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
         objectRock = obj;
       },)
+
+      // Thumbnail
+      // Créer un élément avec la taille spécifiée
+      var boxGeometry = new THREE.BoxGeometry(220, 220, 200);
+
+      // Créer un matériau pour l'élément
+      var boxMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ff00
+      });
+
+      // Créer un mesh avec la géométrie et le matériau
+      var boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+      boxMesh.scale.set(0.05, 0.03, 0.05)
+
+      // Ajouter le mesh à la scène
+      scene.add(boxMesh);
+
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
