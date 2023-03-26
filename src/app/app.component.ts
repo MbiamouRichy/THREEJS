@@ -44,6 +44,10 @@ export class AppComponent {
 
     let object: any;
     let objectRock: any;
+    let boxMesh: any = [];
+   let curve: any;
+    let time: number = 0;
+
 
     init();
     animate();
@@ -83,66 +87,96 @@ export class AppComponent {
       }
       function onError() { }
 
-      const loader = new FBXLoader();
-      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-        object = obj;
-        // window.addEventListener('wheel', ()=>{
-        // })
-        object.rotation.y = 135
-        scene.add(object);
+      // const loader = new FBXLoader();
+      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+      //   object = obj;
+      //   // window.addEventListener('wheel', ()=>{
+      //   // })
+      //   object.position.y = 8.9
+      //   object.rotation.y = 139
+      //   scene.add(object);
 
-      }, onProgress, onError)
-
-
-      // Model Rock
-      // manager
-
-      function loadModel() {
-
-        objectRock.traverse(function (child: any) {
-
-          if (child.isMesh) child.material.map = texture;
-
-        });
-
-        objectRock.position.y = -15;
-        objectRock.position.x = 0;
-        objectRock.scale.set(0.07, 0.05, 0.03)
+      // }, onProgress, onError)
 
 
-        scene.add(objectRock);
+      // // Model Rock
+      // // manager
 
-      }
+      // function loadModel() {
 
-      const manager = new THREE.LoadingManager(loadModel);
-      // texture Rock
+      //   objectRock.traverse(function (child: any) {
 
-      const textureLoader = new THREE.TextureLoader(manager);
+      //     if (child.isMesh) child.material.map = texture;
 
-      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      //   });
 
-      // model Rock
-      const loaderRock = new FBXLoader(manager);
-      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-        objectRock = obj;
-      },)
+      //   objectRock.position.y = -15;
+      //   objectRock.position.x = 0;
+      //   objectRock.scale.set(0.07, 0.05, 0.03)
+
+
+      //   scene.add(objectRock);
+
+      // }
+
+      // const manager = new THREE.LoadingManager(loadModel);
+      // // texture Rock
+
+      // const textureLoader = new THREE.TextureLoader(manager);
+
+      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+
+      // // model Rock
+      // const loaderRock = new FBXLoader(manager);
+      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+      //   objectRock = obj;
+      // },)
 
       // Thumbnail
-      // Créer un élément avec la taille spécifiée
-      var boxGeometry = new THREE.BoxGeometry(220, 220, 200);
+      // Définir la liste des images
+      var imageList = [
+        '../assets/thumbnail/desktop.png',
+        '../assets/thumbnail/moi.jpg',
+        '../assets/thumbnail/Rfram.png',
+        '../assets/thumbnail/Richy-design-sketch-name.png',
+        '../assets/thumbnail/richy.png',
+      ];
 
-      // Créer un matériau pour l'élément
-      var boxMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff00
-      });
+      // Créer une texture pour chaque image et enregistrer dans un tableau
+      var textures = [];
+      for (var i = 0; i < imageList.length; i++) {
+        var textureBox = new THREE.TextureLoader().load(imageList[i]);
+        textures.push(textureBox);
+      }
 
-      // Créer un mesh avec la géométrie et le matériau
-      var boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-      boxMesh.scale.set(0.05, 0.03, 0.05)
+      // Créer une boîte pour chaque texture
+      for (var i = 0; i < textures.length; i++) {
+        var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
+        var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
+        var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
+        boxMeshs.scale.set(0.05, 0.03, 0.5)
+        boxMeshs.position.set(-14, -15, -20)
+        boxMeshs.rotation.y += 0;
+        boxMesh.push(boxMeshs)
+      }
 
-      // Ajouter le mesh à la scène
-      scene.add(boxMesh);
 
+      // boxMesh[1].position.set(16, -11, -20)
+      // boxMesh[1].rotation.y += 180;
+
+      // boxMesh[2].position.set(0, 0, 10)
+      // boxMesh[2].rotation.y += 0;
+
+      // boxMesh[3].position.set(-18, 5, -15)
+      // boxMesh[3].rotation.y += 180;
+
+      // boxMesh[4].position.set(0, 15, -25)
+      // boxMesh[4].rotation.y += 0;
+
+      // Ajouter les boîtes à la scène
+      for (var i = 0; i < textures.length; i++) {
+        scene.add(boxMesh[i]);
+      }
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -165,23 +199,38 @@ export class AppComponent {
       renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
-
     function onDocumentMouseMove(event: any) {
+      time -= 0.05;
 
-      mouseX = (event.clientX - windowHalfX);
+    for(var i = 0; i < boxMesh.length; i++){
+      mouseX = (event.clientX - windowHalfX) / 100;
       mouseY = (event.clientY - windowHalfY);
-
+      boxMesh[i].position.x = -(( Math.sin(time) * 13) / 15) + boxMesh[i].position.x
+      boxMesh[i].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[i].position.y
+      boxMesh[i].rotation.y = -( Math.sin(time) / 50) + boxMesh[i].rotation.y
+      if(boxMesh[i].position.y == 0 || boxMesh[0].position.x == 0){
+        boxMesh[i].rotation.y = 0
+      }
     }
+  }
+
 
     function animate() {
       requestAnimationFrame(animate);
-      render();
-
+        // boxMesh[0].position.x += -(( Math.sin(time) * 13) / 15);
+        // boxMesh[0].position.y += -(( Math.sin(time) * Math.PI) / 15) + 0.1
+        // boxMesh[0].rotation.y += -( Math.sin(time) / 20)
+        if(object){
+          object.rotation.y -= 1
+          if(object.rotation.y  < 135){
+            object.rotation.y = 135
+          }
+        }
+      render()
     }
+
     function render() {
-      if (object) {
-        object.position.y = 8.9;
-      }
+
       renderer.render(scene, camera);
     }
 
