@@ -44,10 +44,9 @@ export class AppComponent {
 
     let object: any;
     let objectRock: any;
-    let boxMesh: any = [];
-   let curve: any;
+    let boxMesh:any = [];
     let time: number = 0;
-
+    let count: number
 
     init();
     animate();
@@ -154,12 +153,13 @@ export class AppComponent {
         var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
-        boxMeshs.scale.set(0.05, 0.03, 0.5)
+        boxMeshs.scale.set(0.07, 0.05, 0.5)
         boxMeshs.position.set(-14, -15, -20)
         boxMeshs.rotation.y += 0;
         boxMesh.push(boxMeshs)
-      }
+        scene.add(boxMesh[0]);
 
+      }
 
       // boxMesh[1].position.set(16, -11, -20)
       // boxMesh[1].rotation.y += 180;
@@ -167,16 +167,15 @@ export class AppComponent {
       // boxMesh[2].position.set(0, 0, 10)
       // boxMesh[2].rotation.y += 0;
 
-      // boxMesh[3].position.set(-18, 5, -15)
+      // boxMesh[3].position.set(-14, 11, -20)
       // boxMesh[3].rotation.y += 180;
 
-      // boxMesh[4].position.set(0, 15, -25)
+      // boxMesh[4].position.set(16, 15, -20)
       // boxMesh[4].rotation.y += 0;
 
       // Ajouter les boîtes à la scène
-      for (var i = 0; i < textures.length; i++) {
-        scene.add(boxMesh[i]);
-      }
+
+
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -188,6 +187,15 @@ export class AppComponent {
       window.addEventListener('resize', onWindowResize);
 
     }
+      function create(){
+          count = 1
+        if(boxMesh[count - 1].position.x >= 10 && count < boxMesh.length){
+
+          scene.add(boxMesh[count])
+          count++
+        }
+      }
+
     function onWindowResize() {
 
       windowHalfX = window.innerWidth / 2;
@@ -201,25 +209,19 @@ export class AppComponent {
     }
     function onDocumentMouseMove(event: any) {
       time -= 0.05;
-
-    for(var i = 0; i < boxMesh.length; i++){
       mouseX = (event.clientX - windowHalfX) / 100;
       mouseY = (event.clientY - windowHalfY);
-      boxMesh[i].position.x = -(( Math.sin(time) * 13) / 15) + boxMesh[i].position.x
-      boxMesh[i].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[i].position.y
-      boxMesh[i].rotation.y = -( Math.sin(time) / 50) + boxMesh[i].rotation.y
-      if(boxMesh[i].position.y == 0 || boxMesh[0].position.x == 0){
-        boxMesh[i].rotation.y = 0
-      }
-    }
-  }
+      boxMesh.forEach((boxMesh: THREE.mesh) => {
+        boxMesh.position.x = -(( Math.sin(time) * 13) / 15) + boxMesh.position.x;
+        boxMesh.position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh.position.y;
+        boxMesh.rotation.y = -( Math.sin(time) / 150) + boxMesh.rotation.y;
 
+      });
+         }
 
     function animate() {
       requestAnimationFrame(animate);
-        // boxMesh[0].position.x += -(( Math.sin(time) * 13) / 15);
-        // boxMesh[0].position.y += -(( Math.sin(time) * Math.PI) / 15) + 0.1
-        // boxMesh[0].rotation.y += -( Math.sin(time) / 20)
+        create()
         if(object){
           object.rotation.y -= 1
           if(object.rotation.y  < 135){

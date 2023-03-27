@@ -64,9 +64,9 @@ $color4: rgba(255,148,95,1);
   background-color:  $color4;
   text-align: center;
 }
-// .show {
-//   display: inline-block;
-// }
+.show {
+  display: inline-block;
+}
 .base,
 .letters,
 .bottom {
@@ -141,8 +141,8 @@ $color4: rgba(255,148,95,1);
       color: $color2;
       font-weight: bold;
       line-height: 100%;
-      animation: appear-top 2s ease-in-out forwards;
-    color: $color1;
+      animation: appear-top 2.5s ease-in-out 2s forwards;
+      color: $color1;
 
     }
   }
@@ -170,7 +170,8 @@ $color4: rgba(255,148,95,1);
     width: 100%;
     color: $color1;
     overflow: hidden;
-    animation: scale 1s ease-in forwards;
+    animation: scale 2.3s ease-in 2s forwards;
+
 
   }
   .text-left {
@@ -196,7 +197,7 @@ $color4: rgba(255,148,95,1);
   @extend %div-col;
   align-items: flex-end;
   z-index: 5;
-  animation: block-left 2s ease forwards;
+  animation: block-left 2s ease 2s forwards ;
 
   p {
     font-size: 0.7rem;
@@ -240,7 +241,7 @@ $color4: rgba(255,148,95,1);
   a {
     width: 20px;
     height: 20px;
-    animation: svg-appear 2s ease-in forwards;
+    animation: svg-appear 1s ease-in 2s forwards;
     svg {
       width: 100%;
       height: 100%;
