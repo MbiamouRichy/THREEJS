@@ -259,3 +259,54 @@ $color4: rgba(255,148,95,1);
   scale: 1;
  }
 }
+
+/*================================== DRAG OR SCROLL ===================================*/
+
+.dragORscroll{
+  @include absolute-div(50%, none, none, 50%);
+  transform: translate(-50%, -50%);
+  @extend %div-row;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  width: 90vw;
+  gap: 5px;
+  display: none;
+  animation: opacity 2s ease-in forwards;
+  hr.souligne{
+    width: 35%;
+    background-color: $color1;
+    height: 5px;
+    border: 0.01px solid $color2;
+  }
+}
+.texte_dos{
+  @extend %div-col;
+  align-items: center;
+  justify-content: center;
+  h1.drag{
+    color: $color1;
+    font-size: calc(100vw/ 10);
+    -webkit-text-stroke: 1px $color2;
+    font-weight: bold;
+  }
+  p.scrollText{
+    font-size:0.7rem;
+    color: $color3;
+    font-weight: 500;
+    flex-wrap: nowrap;
+  }
+}
+@keyframes opacity {
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+@media only screen and (max-width: 614px) {
+  .texte_dos p.scrollText{
+    display: none;
+  }
+}

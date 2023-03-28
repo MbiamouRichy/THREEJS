@@ -4,7 +4,7 @@ import * as THREE from 'three';
 // @ts-ignore
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 // @ts-ignore
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,13 +20,24 @@ export class AppComponent {
     let loader = document.querySelector('.loader') as HTMLDivElement;
     loader.classList.add('show');
 
-    // Charger les données
-    fetch('../angular.json').then(function (response) {
-      // Masquer le loader
       setTimeout(function () {
         loader.classList.remove('show');
-      }, 2000)
-    });
+      }, 2500)
+
+    // Lancer l'experience
+    let btnExplore = document.querySelector('.btn-explore') as HTMLDivElement;
+    let Explore = document.querySelector('.explore')  as HTMLDivElement;
+    let bigText = document.querySelector('.big-text')  as HTMLHeadingElement;
+    let logo = document.querySelector('.logo')  as HTMLDivElement;
+    let dragOrScroll = document.querySelector('.dragORscroll')  as HTMLDivElement;
+
+    btnExplore.addEventListener('click', () =>{
+      dragOrScroll.style.display = "flex";
+        setTimeout(() =>{
+          dragOrScroll.style.display = "none";
+        }, 2000)
+        logo.style.display = bigText.style.display = Explore.style.display = "none"
+    })
 
     /*============================ OBJET 3D ==================*/
     let container: any;
@@ -49,10 +60,11 @@ export class AppComponent {
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     let intersected: any;
+    let labelRenderer: any;
 
     init();
     animate();
-
+    // creation du texte de la thumbnail
     function createTextSprite(text: string, fontSize = 20, textColor = 'black', backgroundColor = 'transparent') {
       const canvas = document.createElement('canvas');
       const context: any = canvas.getContext('2d');
@@ -89,7 +101,6 @@ export class AppComponent {
 
       return sprite;
     }
-
     function init() {
 
       container = document.createElement('div');
@@ -185,7 +196,7 @@ export class AppComponent {
         textures.push(textureBox);
       }
       let TextBox = [
-        'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail"',
+        'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail".',
         'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
         'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
         'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
@@ -217,6 +228,7 @@ export class AppComponent {
       boxMesh[3].position.set(16, -30, -20)
 
 
+
       // Ajouter les boîtes à la scène
 
       //renderer
@@ -229,6 +241,29 @@ export class AppComponent {
       window.addEventListener('resize', onWindowResize);
 
     }
+
+    // Créez un renderer CSS2D pour les objets HTML
+    labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    document.body.appendChild(labelRenderer.domElement);
+    fetch('../assets/fleche.svg')
+    .then((response) => response.text())
+    .then((svgString) => {
+      // Créez un élément HTML contenant le SVG
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = svgString;
+      const svgElement: any = wrapper.querySelector('svg');
+      svgElement.style.width = '100px';
+      svgElement.style.height = '100px';
+      const cssObject = new CSS2DObject(svgElement);
+      cssObject.position.set(0, 0, 0.6);
+
+      // Ajoutez l'objet 3D à la scène
+    })    
+      // Créez un objet CSS2D à l'aide de l'élément SVG
+
 
     // Rentre mes objet responsives
     function onWindowResize() {
@@ -316,7 +351,6 @@ export class AppComponent {
 
     function animate() {
       requestAnimationFrame(animate);
-
       if (object) {
         object.rotation.y -= 1
         if (object.rotation.y < 135) {
@@ -327,6 +361,7 @@ export class AppComponent {
     }
 
     function render() {
+      labelRenderer.render(scene, camera);
       renderer.render(scene, camera);
     }
 
