@@ -53,7 +53,42 @@ export class AppComponent {
     init();
     animate();
 
+    function createTextSprite(text: string, fontSize = 20, textColor = 'black', backgroundColor = 'transparent') {
+      const canvas = document.createElement('canvas');
+      const context: any = canvas.getContext('2d');
+      const font = `${fontSize}px Space Grotesk`;
+      context.font = font;
 
+      // Diviser le texte en lignes
+      const lines = text.split('\n');
+
+      // Calculer la largeur maximale des lignes de texte
+      const textWidth = Math.max(...lines.map(line => context.measureText(line).width));
+
+      // Dessiner le fond
+      context.fillStyle = backgroundColor;
+      context.fillRect(0, 0, textWidth + fontSize, fontSize / lines.length);
+
+      // Dessiner chaque ligne de texte
+      context.textBaseline = 'middle';
+      context.fillStyle = textColor;
+      lines.forEach((line, index) => {
+        context.fillText(line, fontSize / 2, fontSize * 0.75 + (fontSize * 1.5 * index));
+      });
+
+      // Créer la texture
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+
+      // Créer le sprite
+      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+      const sprite = new THREE.Sprite(spriteMaterial);
+
+      // Ajuster la taille du sprite
+      sprite.scale.set(textWidth / fontSize * 10, 100, -15);
+
+      return sprite;
+    }
 
     function init() {
 
@@ -149,7 +184,13 @@ export class AppComponent {
         var textureBox = new THREE.TextureLoader().load(imageList[i]);
         textures.push(textureBox);
       }
-
+      let TextBox = [
+        'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail"',
+        'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
+        'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
+        'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
+        "J'ai commence par apprendre \nTHREE.js et j'ai realise un \nprojet",
+      ];
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
         var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
@@ -158,6 +199,9 @@ export class AppComponent {
         boxMeshs.scale.set(0.06, 0.04, 0.5)
         boxMeshs.position.set(-16, -15, -20)
         boxMeshs.rotation.y += 0;
+        const textSprite = createTextSprite(TextBox[i]);
+        textSprite.position.set(-200, -100, 20);
+        boxMeshs.add(textSprite);
         boxMesh.push(boxMeshs)
         scene.add(boxMesh[0]);
         scene.add(boxMesh[1]);
@@ -168,14 +212,12 @@ export class AppComponent {
 
       boxMesh[1].position.set(16, -11, -20)
 
-      boxMesh[2].position.set(0, 0, 5)
+      boxMesh[2].position.set(0, 0, -20)
 
       boxMesh[3].position.set(16, -30, -20)
 
 
       // Ajouter les boîtes à la scène
-
-
 
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
