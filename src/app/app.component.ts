@@ -44,9 +44,11 @@ export class AppComponent {
 
     let object: any;
     let objectRock: any;
-    let boxMesh:any = [];
+    let boxMesh: any = [];
     let time: number = 0;
-    let count: number
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    let intersected: any;
 
     init();
     animate();
@@ -153,25 +155,23 @@ export class AppComponent {
         var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
-        boxMeshs.scale.set(0.07, 0.05, 0.5)
-        boxMeshs.position.set(-14, -15, -20)
+        boxMeshs.scale.set(0.06, 0.04, 0.5)
+        boxMeshs.position.set(-16, -15, -20)
         boxMeshs.rotation.y += 0;
         boxMesh.push(boxMeshs)
         scene.add(boxMesh[0]);
+        scene.add(boxMesh[1]);
+        scene.add(boxMesh[2]);
+        scene.add(boxMesh[3]);
 
       }
 
-      // boxMesh[1].position.set(16, -11, -20)
-      // boxMesh[1].rotation.y += 180;
+      boxMesh[1].position.set(16, -11, -20)
 
-      // boxMesh[2].position.set(0, 0, 10)
-      // boxMesh[2].rotation.y += 0;
+      boxMesh[2].position.set(0, 0, 5)
 
-      // boxMesh[3].position.set(-14, 11, -20)
-      // boxMesh[3].rotation.y += 180;
+      boxMesh[3].position.set(16, -30, -20)
 
-      // boxMesh[4].position.set(16, 15, -20)
-      // boxMesh[4].rotation.y += 0;
 
       // Ajouter les boîtes à la scène
 
@@ -187,15 +187,8 @@ export class AppComponent {
       window.addEventListener('resize', onWindowResize);
 
     }
-      function create(){
-          count = 1
-        if(boxMesh[count - 1].position.x >= 10 && count < boxMesh.length){
 
-          scene.add(boxMesh[count])
-          count++
-        }
-      }
-
+    // Rentre mes objet responsives
     function onWindowResize() {
 
       windowHalfX = window.innerWidth / 2;
@@ -207,34 +200,94 @@ export class AppComponent {
       renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
+    // Convertier mes textures pour leurs rendre gris au hover
+    function convertTextureToGrayscale(texture: any) {
+      const canvas = document.createElement('canvas');
+      canvas.width = texture.image.width;
+      canvas.height = texture.image.height;
+
+      const ctx: any = canvas.getContext('2d');
+      ctx.drawImage(texture.image, 0, 0, canvas.width, canvas.height);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = data[i + 1] = data[i + 2] = avg;
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      const grayscaleTexture = new THREE.Texture(canvas);
+      grayscaleTexture.needsUpdate = true;
+
+      return grayscaleTexture;
+    }
+    // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
       time -= 0.05;
-      mouseX = (event.clientX - windowHalfX) / 100;
-      mouseY = (event.clientY - windowHalfY);
-      boxMesh.forEach((boxMesh: THREE.mesh) => {
-        boxMesh.position.x = -(( Math.sin(time) * 13) / 15) + boxMesh.position.x;
-        boxMesh.position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh.position.y;
-        boxMesh.rotation.y = -( Math.sin(time) / 150) + boxMesh.rotation.y;
+      // Calculez les coordonnées de la souris dans le système de coordonnées normalisé (-1 à 1)
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-      });
-         }
+      boxMesh[0].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
+      boxMesh[0].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
+
+      boxMesh[1].position.x = ((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
+      boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
+
+      boxMesh[2].position.x = ((Math.sin(time) * 7) / 15) + boxMesh[2].position.x;
+      boxMesh[2].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
+
+      boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
+      boxMesh[3].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
+
+
+
+      // Mettez à jour le raycaster en utilisant les coordonnées de la souris
+      raycaster.setFromCamera(mouse, camera);
+
+      // Obtenez les objets 3D qui sont intersectés par le raycaster
+      let intersects = raycaster.intersectObjects(scene.children);
+
+      // Si un objet 3D est intersecté
+
+      if (intersects.length > 0) {
+        if (intersected !== intersects[0].object) {
+          if (intersected) {
+            intersected.material.map = intersected.userData.originalTexture;
+          }
+
+          intersected = intersects[0].object;
+          intersected.userData.originalTexture = intersected.material.map;
+          intersected.material.map = convertTextureToGrayscale(intersected.material.map);
+        }
+      } else {
+        if (intersected) {
+          intersected.material.map = intersected.userData.originalTexture;
+        }
+        intersected = null;
+      }
+
+    }
 
     function animate() {
       requestAnimationFrame(animate);
-        create()
-        if(object){
-          object.rotation.y -= 1
-          if(object.rotation.y  < 135){
-            object.rotation.y = 135
-          }
+
+      if (object) {
+        object.rotation.y -= 1
+        if (object.rotation.y < 135) {
+          object.rotation.y = 135
         }
+      }
       render()
     }
 
     function render() {
-
       renderer.render(scene, camera);
     }
+
 
   }
 
