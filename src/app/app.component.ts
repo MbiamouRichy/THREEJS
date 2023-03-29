@@ -20,23 +20,23 @@ export class AppComponent {
     let loader = document.querySelector('.loader') as HTMLDivElement;
     loader.classList.add('show');
 
-      setTimeout(function () {
-        loader.classList.remove('show');
-      }, 2500)
+    setTimeout(function () {
+      loader.classList.remove('show');
+    }, 2500)
 
     // Lancer l'experience
     let btnExplore = document.querySelector('.btn-explore') as HTMLDivElement;
-    let Explore = document.querySelector('.explore')  as HTMLDivElement;
-    let bigText = document.querySelector('.big-text')  as HTMLHeadingElement;
-    let logo = document.querySelector('.logo')  as HTMLDivElement;
-    let dragOrScroll = document.querySelector('.dragORscroll')  as HTMLDivElement;
+    let Explore = document.querySelector('.explore') as HTMLDivElement;
+    let bigText = document.querySelector('.big-text') as HTMLHeadingElement;
+    let logo = document.querySelector('.logo') as HTMLDivElement;
+    let dragOrScroll = document.querySelector('.dragORscroll') as HTMLDivElement;
 
-    btnExplore.addEventListener('click', () =>{
+    btnExplore.addEventListener('click', () => {
       dragOrScroll.style.display = "flex";
-        setTimeout(() =>{
-          dragOrScroll.style.display = "none";
-        }, 2000)
-        logo.style.display = bigText.style.display = Explore.style.display = "none"
+      setTimeout(() => {
+        dragOrScroll.style.display = "none";
+      }, 2000)
+      logo.style.display = bigText.style.display = Explore.style.display = "none"
     })
 
     /*============================ OBJET 3D ==================*/
@@ -60,7 +60,6 @@ export class AppComponent {
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     let intersected: any;
-    let labelRenderer: any;
 
     init();
     animate();
@@ -97,7 +96,7 @@ export class AppComponent {
       const sprite = new THREE.Sprite(spriteMaterial);
 
       // Ajuster la taille du sprite
-      sprite.scale.set(textWidth / fontSize * 10, 100, -15);
+      sprite.scale.set(textWidth / fontSize * 10, 150, -25);
 
       return sprite;
     }
@@ -204,28 +203,31 @@ export class AppComponent {
       ];
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
+
         var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
         boxMeshs.scale.set(0.06, 0.04, 0.5)
-        boxMeshs.position.set(-16, -15, -20)
-        boxMeshs.rotation.y += 0;
         const textSprite = createTextSprite(TextBox[i]);
-        textSprite.position.set(-200, -100, 20);
+        textSprite.position.set(-50, -100, 20);
         boxMeshs.add(textSprite);
-        boxMesh.push(boxMeshs)
-        scene.add(boxMesh[0]);
-        scene.add(boxMesh[1]);
-        scene.add(boxMesh[2]);
-        scene.add(boxMesh[3]);
+        // Changez la texture en gris
+        boxMeshs.userData['originalTexture'] = boxMeshs.material.map;
+        boxMeshs.material.map = convertTextureToGrayscale(boxMeshs.material.map);
 
+        boxMesh.push(boxMeshs)
+        scene.add(boxMesh[i]);
       }
+      boxMesh[0].position.set(-16, -15, -20)
 
       boxMesh[1].position.set(16, -11, -20)
 
       boxMesh[2].position.set(0, 0, -20)
 
       boxMesh[3].position.set(16, -30, -20)
+
+      boxMesh[4].position.set(-16, -45, -20)
+
 
 
 
@@ -242,29 +244,6 @@ export class AppComponent {
 
     }
 
-    // Créez un renderer CSS2D pour les objets HTML
-    labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.style.position = 'absolute';
-    labelRenderer.domElement.style.top = '0px';
-    document.body.appendChild(labelRenderer.domElement);
-    fetch('../assets/fleche.svg')
-    .then((response) => response.text())
-    .then((svgString) => {
-      // Créez un élément HTML contenant le SVG
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = svgString;
-      const svgElement: any = wrapper.querySelector('svg');
-      svgElement.style.width = '100px';
-      svgElement.style.height = '100px';
-      const cssObject = new CSS2DObject(svgElement);
-      cssObject.position.set(0, 0, 0.6);
-
-      // Ajoutez l'objet 3D à la scène
-    })    
-      // Créez un objet CSS2D à l'aide de l'élément SVG
-
-
     // Rentre mes objet responsives
     function onWindowResize() {
 
@@ -279,6 +258,11 @@ export class AppComponent {
     }
     // Convertier mes textures pour leurs rendre gris au hover
     function convertTextureToGrayscale(texture: any) {
+      // Vérifiez que la texture est définie
+      if (!texture || !texture.image || !texture.image.width || !texture.image.height) {
+        return texture;
+      }
+
       const canvas = document.createElement('canvas');
       canvas.width = texture.image.width;
       canvas.height = texture.image.height;
@@ -314,13 +298,33 @@ export class AppComponent {
       boxMesh[1].position.x = ((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
       boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
 
-      boxMesh[2].position.x = ((Math.sin(time) * 7) / 15) + boxMesh[2].position.x;
-      boxMesh[2].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
+      boxMesh[2].position.x = ((Math.sin(time) * 2) / 10) + boxMesh[2].position.x;
+      boxMesh[2].position.y = ((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
 
       boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
       boxMesh[3].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
 
+      boxMesh[4].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
+      boxMesh[4].position.y = ((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
 
+      if (boxMesh[4].position.y > 5) {
+        time -= 0.05;
+
+        boxMesh[0].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
+        boxMesh[0].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
+
+        boxMesh[1].position.x = -((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
+        boxMesh[1].position.y = -((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
+
+        boxMesh[2].position.x = -((Math.sin(time) * 3) / 10) + boxMesh[2].position.x;
+        boxMesh[2].position.y = -((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
+
+        boxMesh[3].position.x = -((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
+        boxMesh[3].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
+
+        boxMesh[4].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
+        boxMesh[4].position.y = -((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
+      }
 
       // Mettez à jour le raycaster en utilisant les coordonnées de la souris
       raycaster.setFromCamera(mouse, camera);
@@ -361,7 +365,6 @@ export class AppComponent {
     }
 
     function render() {
-      labelRenderer.render(scene, camera);
       renderer.render(scene, camera);
     }
 
