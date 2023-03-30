@@ -146,8 +146,8 @@ export class AppComponent {
         object = obj;
         // window.addEventListener('wheel', ()=>{
         // })
-        object.position.y = 8.9
-        object.rotation.y = 139
+        object.position.y = 8.5
+        object.rotation.y = 154.5
         scene.add(object);
 
       }, onProgress, onError)
@@ -184,6 +184,8 @@ export class AppComponent {
       const loaderRock = new FBXLoader(manager);
       loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
         objectRock = obj;
+        objectRock.rotation.y = 154.5
+
       },)
 
       // Thumbnail
@@ -227,7 +229,7 @@ export class AppComponent {
 
       container.appendChild(renderer.domElement);
 
-      document.addEventListener('mousemove', onDocumentMouseMove);
+      container.addEventListener('mousemove', onDocumentMouseMove);
       window.addEventListener('resize', onWindowResize);
 
     }
@@ -323,7 +325,7 @@ export class AppComponent {
       boxMesh[4].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
       boxMesh[4].position.y = ((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
       boxMesh[4].position.z = (Math.sin(time) * 10) / 2
-
+      object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
       if (boxMesh[4].position.y > 5) {
         time -= 0.05;
       }
@@ -349,12 +351,6 @@ export class AppComponent {
     }
     function animate() {
       requestAnimationFrame(animate);
-      if (object) {
-        object.rotation.y -= 1
-        if (object.rotation.y < 135) {
-          object.rotation.y = 135
-        }
-      }
       render()
     }
     function render() {
