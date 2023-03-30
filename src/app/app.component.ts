@@ -36,7 +36,9 @@ export class AppComponent {
       setTimeout(() => {
         dragOrScroll.style.display = "none";
       }, 2000)
-      logo.style.display = bigText.style.display = Explore.style.display = "none"
+      logo.style.display = bigText.style.display = Explore.style.display = "none";
+      // Mettre mes thumbnail(mes boxes) en gris
+      Gris()
     })
 
     /*============================ OBJET 3D ==================*/
@@ -60,7 +62,13 @@ export class AppComponent {
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     let intersected: any;
-
+    let TextBox = [
+      'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail".',
+      'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
+      'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
+      'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
+      'J\'ai commence par apprendre \nTHREE.js et j\'ai realise une \nintegration',
+    ];
     init();
     animate();
     // creation du texte de la thumbnail
@@ -133,50 +141,50 @@ export class AppComponent {
       }
       function onError() { }
 
-      // const loader = new FBXLoader();
-      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-      //   object = obj;
-      //   // window.addEventListener('wheel', ()=>{
-      //   // })
-      //   object.position.y = 8.9
-      //   object.rotation.y = 139
-      //   scene.add(object);
+      const loader = new FBXLoader();
+      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+        object = obj;
+        // window.addEventListener('wheel', ()=>{
+        // })
+        object.position.y = 8.9
+        object.rotation.y = 139
+        scene.add(object);
 
-      // }, onProgress, onError)
-
-
-      // // Model Rock
-      // // manager
-
-      // function loadModel() {
-
-      //   objectRock.traverse(function (child: any) {
-
-      //     if (child.isMesh) child.material.map = texture;
-
-      //   });
-
-      //   objectRock.position.y = -15;
-      //   objectRock.position.x = 0;
-      //   objectRock.scale.set(0.07, 0.05, 0.03)
+      }, onProgress, onError)
 
 
-      //   scene.add(objectRock);
+      // Model Rock
+      // manager
 
-      // }
+      function loadModel() {
 
-      // const manager = new THREE.LoadingManager(loadModel);
-      // // texture Rock
+        objectRock.traverse(function (child: any) {
 
-      // const textureLoader = new THREE.TextureLoader(manager);
+          if (child.isMesh) child.material.map = texture;
 
-      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+        });
 
-      // // model Rock
-      // const loaderRock = new FBXLoader(manager);
-      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-      //   objectRock = obj;
-      // },)
+        objectRock.position.y = -15;
+        objectRock.position.x = 0;
+        objectRock.scale.set(0.07, 0.05, 0.03)
+
+
+        scene.add(objectRock);
+
+      }
+
+      const manager = new THREE.LoadingManager(loadModel);
+      // texture Rock
+
+      const textureLoader = new THREE.TextureLoader(manager);
+
+      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+
+      // model Rock
+      const loaderRock = new FBXLoader(manager);
+      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+        objectRock = obj;
+      },)
 
       // Thumbnail
       // Définir la liste des images
@@ -194,45 +202,25 @@ export class AppComponent {
         var textureBox = new THREE.TextureLoader().load(imageList[i]);
         textures.push(textureBox);
       }
-      let TextBox = [
-        'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail".',
-        'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
-        'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
-        'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
-        "J'ai commence par apprendre \nTHREE.js et j'ai realise un \nprojet",
-      ];
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
 
         var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
-        boxMeshs.scale.set(0.06, 0.04, 0.5)
-        const textSprite = createTextSprite(TextBox[i]);
-        textSprite.position.set(-50, -100, 20);
-        boxMeshs.add(textSprite);
-        // Changez la texture en gris
-        boxMeshs.userData['originalTexture'] = boxMeshs.material.map;
-        boxMeshs.material.map = convertTextureToGrayscale(boxMeshs.material.map);
-
+        boxMeshs.scale.set(0.05, 0.03, 0.1)
         boxMesh.push(boxMeshs)
         scene.add(boxMesh[i]);
       }
       boxMesh[0].position.set(-16, -15, -20)
 
-      boxMesh[1].position.set(16, -11, -20)
+      boxMesh[1].position.set(18, -11, -20)
 
-      boxMesh[2].position.set(0, 0, -20)
+      boxMesh[2].position.set(0, 0, 2)
 
       boxMesh[3].position.set(16, -30, -20)
 
       boxMesh[4].position.set(-16, -45, -20)
-
-
-
-
-      // Ajouter les boîtes à la scène
-
       //renderer
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -243,6 +231,7 @@ export class AppComponent {
       window.addEventListener('resize', onWindowResize);
 
     }
+
 
     // Rentre mes objet responsives
     function onWindowResize() {
@@ -272,7 +261,6 @@ export class AppComponent {
 
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-
       for (let i = 0; i < data.length; i += 4) {
         const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
         data[i] = data[i + 1] = data[i + 2] = avg;
@@ -285,74 +273,80 @@ export class AppComponent {
 
       return grayscaleTexture;
     }
-    // Fonction de l'venement qui ecoute le deplacement de la souris
-    function onDocumentMouseMove(event: any) {
+    // Function qui met les thumbnails(Mes Boxes) en gris
+    function Gris() {
+      for (let i = 0; i < boxMesh.length; i++) {
+        if (boxMesh[i].material.map) {
+          // Créer une copie de la texture d'origine
+          var originalTexture = boxMesh[i].material.map.clone();
+          var grayTexture = convertTextureToGrayscale(originalTexture);
+          if (grayTexture) {
+            boxMesh[i].material.map.clone = grayTexture;
+          }
+        }
+      }
+    }
+    // Function pour retirer le niveau de gris
+    function RetirerGris(obj: any) {
+      if (obj.material.map && obj.material.map.isGrayTexture) {
+        obj.material.map = obj.userData.originalTexture;
+      }
+    }
+
+    function moveAfficheBox() {
+      for (let i = 0; i < TextBox.length; i++) {
+        const textSprite = createTextSprite(TextBox[i]);
+          textSprite.position.set(-50, -100, 20);
+        if (boxMesh[i].position.y < 5 && boxMesh[i].position.y > -2) {
+          boxMesh[i].add(textSprite);
+        }
+      }
       time -= 0.05;
-      // Calculez les coordonnées de la souris dans le système de coordonnées normalisé (-1 à 1)
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+
 
       boxMesh[0].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
       boxMesh[0].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
+      boxMesh[0].position.z = (Math.sin(time) * 10) / 2
 
       boxMesh[1].position.x = ((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
       boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
+      boxMesh[1].position.z = (-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10
 
       boxMesh[2].position.x = ((Math.sin(time) * 2) / 10) + boxMesh[2].position.x;
       boxMesh[2].position.y = ((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
 
       boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
       boxMesh[3].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
+      boxMesh[3].position.z = -(Math.sin(time) * 25) / 10
 
       boxMesh[4].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
       boxMesh[4].position.y = ((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
+      boxMesh[4].position.z = (Math.sin(time) * 10) / 2
 
       if (boxMesh[4].position.y > 5) {
         time -= 0.05;
-
-        boxMesh[0].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
-        boxMesh[0].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
-
-        boxMesh[1].position.x = -((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
-        boxMesh[1].position.y = -((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
-
-        boxMesh[2].position.x = -((Math.sin(time) * 3) / 10) + boxMesh[2].position.x;
-        boxMesh[2].position.y = -((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
-
-        boxMesh[3].position.x = -((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
-        boxMesh[3].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
-
-        boxMesh[4].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
-        boxMesh[4].position.y = -((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
       }
+    }
+    // Fonction de l'venement qui ecoute le deplacement de la souris
+    function onDocumentMouseMove(event: any) {
+      // Affiche le texte sur les thumbnails
+      moveAfficheBox()
 
+      // Calculez les coordonnées de la souris dans le système de coordonnées normalisé (-1 à 1)
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       // Mettez à jour le raycaster en utilisant les coordonnées de la souris
       raycaster.setFromCamera(mouse, camera);
-
       // Obtenez les objets 3D qui sont intersectés par le raycaster
       let intersects = raycaster.intersectObjects(scene.children);
 
-      // Si un objet 3D est intersecté
-
+      // Appliquer la texture en niveaux de gris à l'objet survolé
       if (intersects.length > 0) {
-        if (intersected !== intersects[0].object) {
-          if (intersected) {
-            intersected.material.map = intersected.userData.originalTexture;
-          }
-
-          intersected = intersects[0].object;
-          intersected.userData.originalTexture = intersected.material.map;
-          intersected.material.map = convertTextureToGrayscale(intersected.material.map);
-        }
-      } else {
-        if (intersected) {
-          intersected.material.map = intersected.userData.originalTexture;
-        }
-        intersected = null;
+        intersected = intersects[0].object;
+        RetirerGris(intersected)
       }
-
     }
-
     function animate() {
       requestAnimationFrame(animate);
       if (object) {
@@ -363,9 +357,9 @@ export class AppComponent {
       }
       render()
     }
-
     function render() {
       renderer.render(scene, camera);
+
     }
 
 
