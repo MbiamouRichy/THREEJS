@@ -35,12 +35,10 @@ export class AppComponent {
       dragOrScroll.style.display = "flex";
       setTimeout(() => {
         dragOrScroll.style.display = "none";
-      }, 2000)
+        // Affiche les thumbnail
+        thumbnail()
+      }, 1500)
       logo.style.display = bigText.style.display = Explore.style.display = "none";
-      // Mettre mes thumbnail(mes boxes) en gris
-      Gris()
-      // Affiche les thumbnail
-      thumbnail()
     })
 
     /*============================ OBJET 3D ==================*/
@@ -116,7 +114,7 @@ export class AppComponent {
       document.body.appendChild(container);
 
       camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z= 60
+      camera.position.z = 60
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -146,8 +144,6 @@ export class AppComponent {
       const loader = new FBXLoader();
       loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
         object = obj;
-        // window.addEventListener('wheel', ()=>{
-        // })
         object.position.y = 8.5
         object.rotation.y = 154.5
         scene.add(object);
@@ -160,15 +156,12 @@ export class AppComponent {
       function loadModel() {
 
         objectRock.traverse(function (child: any) {
-
           if (child.isMesh) child.material.map = texture;
-
         });
 
         objectRock.position.y = -15;
         objectRock.position.x = 0;
         objectRock.scale.set(0.07, 0.05, 0.03)
-
 
         scene.add(objectRock);
 
@@ -221,6 +214,9 @@ export class AppComponent {
       boxMesh[3].position.set(16, -30, -20)
 
       boxMesh[4].position.set(-16, -45, -20)
+
+      // Mettre mes thumbnail(mes boxes) en gris
+      Gris()
     }
 
     //renderer
@@ -312,7 +308,7 @@ export class AppComponent {
       boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
       boxMesh[1].position.z = (-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10
 
-      boxMesh[2].position.x = ((Math.sin(time) * 2) / 10) + boxMesh[2].position.x;
+      boxMesh[2].position.x = ((Math.sin(time) * 5) / 5) + boxMesh[2].position.x;
       boxMesh[2].position.y = ((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
 
       boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
