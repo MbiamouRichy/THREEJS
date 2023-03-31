@@ -129,55 +129,56 @@ export class AppComponent {
 
 
       // model Girl
-      function onProgress(xhr: any) {
+      // function onProgress(xhr: any) {
 
-        if (xhr.lengthComputable) {
-          const percentComplete: number = xhr.loaded / xhr.total * 100;
-          percent_load = Math.round(percentComplete);
-          bottom.textContent = percent_load + '%';
-          console.log('model ' + percent_load + '% downloaded');
-        }
-        return percent_load;
-      }
-      function onError() { }
+      //   if (xhr.lengthComputable) {
+      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
+      //     percent_load = Math.round(percentComplete);
+      //     bottom.textContent = percent_load + '%';
+      //     console.log('model ' + percent_load + '% downloaded');
+      //   }
+      //   return percent_load;
+      // }
+      // function onError() { }
 
-      const loader = new FBXLoader();
-      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-        object = obj;
-        object.position.y = 8.5
-        object.rotation.y = 154.5
-        scene.add(object);
+      // const loader = new FBXLoader();
+      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+      //   object = obj;
+      //   object.position.y = 8.5
+      //   object.rotation.y = 154.5
+      //   scene.add(object);
 
-      }, onProgress, onError)
+      // }, onProgress, onError)
 
-      // Model Rock
-      // manager
+      // // Model Rock
+      // // manager
 
-      function loadModel() {
+      // function loadModel() {
 
-        objectRock.traverse(function (child: any) {
-          if (child.isMesh) child.material.map = texture;
-        });
+      //   objectRock.traverse(function (child: any) {
+      //     if (child.isMesh) child.material.map = texture;
+      //   });
 
-        objectRock.position.y = -15;
-        objectRock.position.x = 0;
-        objectRock.scale.set(0.07, 0.05, 0.03)
+      //   objectRock.position.y = -15;
+      //   objectRock.position.x = 0;
+      //   objectRock.scale.set(0.07, 0.05, 0.03)
 
-        scene.add(objectRock);
+      //   scene.add(objectRock);
 
-      }
-      const manager = new THREE.LoadingManager(loadModel);
-      // texture Rock
-      const textureLoader = new THREE.TextureLoader(manager);
-      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
-      // model Rock
-      const loaderRock = new FBXLoader(manager);
-      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-        objectRock = obj;
-        objectRock.rotation.y = 154.5;
-      },)
+      // }
+      // const manager = new THREE.LoadingManager(loadModel);
+      // // texture Rock
+      // const textureLoader = new THREE.TextureLoader(manager);
+      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      // // model Rock
+      // const loaderRock = new FBXLoader(manager);
+      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+      //   objectRock = obj;
+      //   objectRock.rotation.y = 154.5;
+      // },)
 
     }
+    // Fonction pour creer les thumbnails
     function thumbnail() {
       // Thumbnail
       // Définir la liste des images
@@ -308,8 +309,8 @@ export class AppComponent {
       boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
       boxMesh[1].position.z = (-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10
 
-      boxMesh[2].position.x = ((Math.sin(time) * 5) / 5) + boxMesh[2].position.x;
-      boxMesh[2].position.y = ((Math.sin(time) / 5) + 0.4) + boxMesh[2].position.y;
+      boxMesh[2].position.x = -((Math.cos(time) * 5) / 15) + boxMesh[2].position.x;
+      boxMesh[2].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
 
       boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
       boxMesh[3].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
@@ -350,8 +351,6 @@ export class AppComponent {
       renderer.render(scene, camera);
 
     }
-
-
   }
 
 }
