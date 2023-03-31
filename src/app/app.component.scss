@@ -302,6 +302,9 @@ $color4: rgba(255,148,95,1);
     font-size: calc(100vw/ 10);
     -webkit-text-stroke: 1px $color2;
     font-weight: bold;
+    @extend %div-row;
+    align-items: center;
+    justify-content: center;
   }
   p.scrollText{
     font-size:0.7rem;
@@ -309,6 +312,11 @@ $color4: rgba(255,148,95,1);
     font-weight: 500;
     flex-wrap: nowrap;
   }
+}
+.texte_dos svg{
+  width: 25%;
+  height: 80%;
+  fill: $color1;
 }
 @keyframes opacity {
   from{
