@@ -282,13 +282,7 @@ export class AppComponent {
         }
       }
     }
-    // Function pour retirer le niveau de gris
-    function RetirerGris(obj: any) {
-      if (obj.material.map && obj.material.map.isGrayTexture) {
-        obj.material.map = obj.userData.originalTexture;
-      }
-    }
-
+    // Function pour faire bouger les thumbnails
     function moveAfficheBox() {
       for (let i = 0; i < TextBox.length; i++) {
         const textSprite = createTextSprite(TextBox[i]);
@@ -326,7 +320,6 @@ export class AppComponent {
     }
     // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
-      // Affiche le texte sur les thumbnails
       moveAfficheBox()
 
       // Calculez les coordonnées de la souris dans le système de coordonnées normalisé (-1 à 1)
@@ -339,8 +332,20 @@ export class AppComponent {
 
       // Appliquer la texture en niveaux de gris à l'objet survolé
       if (intersects.length > 0) {
-        intersected = intersects[0].object;
-        RetirerGris(intersected)
+        if (intersected !== intersects[0].object) {
+          if (intersected) {
+            intersected.userData.originalTexture = intersected.material.map
+          }
+
+          intersected = intersects[0].object
+          intersected.userData.originalTexture = intersected.material.map
+          intersected.material.map = convertTextureToGrayscale(intersected.material.map)
+
+        }
+      }else {
+        if (intersected) {
+          intersected.userData.originalTexture = intersected.material.map
+        }
       }
     }
     function animate() {
