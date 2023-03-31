@@ -39,6 +39,8 @@ export class AppComponent {
       logo.style.display = bigText.style.display = Explore.style.display = "none";
       // Mettre mes thumbnail(mes boxes) en gris
       Gris()
+      // Affiche les thumbnail
+      thumbnail()
     })
 
     /*============================ OBJET 3D ==================*/
@@ -114,7 +116,7 @@ export class AppComponent {
       document.body.appendChild(container);
 
       camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 60;
+      camera.position.z= 60
 
       // remove backgroung scene
       renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -152,7 +154,6 @@ export class AppComponent {
 
       }, onProgress, onError)
 
-
       // Model Rock
       // manager
 
@@ -172,22 +173,19 @@ export class AppComponent {
         scene.add(objectRock);
 
       }
-
       const manager = new THREE.LoadingManager(loadModel);
       // texture Rock
-
       const textureLoader = new THREE.TextureLoader(manager);
-
       const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
-
       // model Rock
       const loaderRock = new FBXLoader(manager);
       loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
         objectRock = obj;
-        objectRock.rotation.y = 154.5
-
+        objectRock.rotation.y = 154.5;
       },)
 
+    }
+    function thumbnail() {
       // Thumbnail
       // Définir la liste des images
       var imageList = [
@@ -223,17 +221,16 @@ export class AppComponent {
       boxMesh[3].position.set(16, -30, -20)
 
       boxMesh[4].position.set(-16, -45, -20)
-      //renderer
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-
-      container.appendChild(renderer.domElement);
-
-      container.addEventListener('mousemove', onDocumentMouseMove);
-      window.addEventListener('resize', onWindowResize);
-
     }
 
+    //renderer
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    container.appendChild(renderer.domElement);
+
+    container.addEventListener('mousemove', onDocumentMouseMove);
+    window.addEventListener('resize', onWindowResize);
 
     // Rentre mes objet responsives
     function onWindowResize() {
@@ -283,7 +280,7 @@ export class AppComponent {
           var originalTexture = boxMesh[i].material.map.clone();
           var grayTexture = convertTextureToGrayscale(originalTexture);
           if (grayTexture) {
-            boxMesh[i].material.map.clone = grayTexture;
+            boxMesh[i].material.map = grayTexture;
           }
         }
       }
@@ -298,7 +295,7 @@ export class AppComponent {
     function moveAfficheBox() {
       for (let i = 0; i < TextBox.length; i++) {
         const textSprite = createTextSprite(TextBox[i]);
-          textSprite.position.set(-50, -100, 20);
+        textSprite.position.set(-50, -100, 20);
         if (boxMesh[i].position.y < 5 && boxMesh[i].position.y > -2) {
           boxMesh[i].add(textSprite);
         }
