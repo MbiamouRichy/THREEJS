@@ -53,12 +53,13 @@ export class AppComponent {
 
     let windowHalfX = window.innerWidth / 2;
     let windowHalfY = window.innerHeight / 2;
-    let bottom = document.querySelector('.bottom') as HTMLDivElement;
+    let Count_loader = document.querySelector('.Count_loader') as HTMLDivElement;
 
     let object: any;
     let objectRock: any;
     let boxMesh: any = [];
     let time: number = 0;
+    let time_desc: number = 0;
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     let intersected: any;
@@ -128,54 +129,53 @@ export class AppComponent {
       scene.add(pointLight);
 
 
-      // // model Girl
-      // function onProgress(xhr: any) {
+      // model Girl
+      function onProgress(xhr: any) {
 
-      //   if (xhr.lengthComputable) {
-      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
-      //     percent_load = Math.round(percentComplete);
-      //     bottom.textContent = percent_load + '%';
-      //     console.log('model ' + percent_load + '% downloaded');
-      //   }
-      //   return percent_load;
-      // }
-      // function onError() { }
+        if (xhr.lengthComputable) {
+          const percentComplete: number = xhr.loaded / xhr.total * 100;
+          percent_load = Math.round(percentComplete);
+          Count_loader.textContent = percent_load + '%';
+        }
+        return percent_load;
+      }
+      function onError() { }
 
-      // const loader = new FBXLoader();
-      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-      //   object = obj;
-      //   object.position.y = 8.5
-      //   object.rotation.y = 154.5
-      //   scene.add(object);
+      const loader = new FBXLoader();
+      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+        object = obj;
+        object.position.y = 8.5
+        object.rotation.y = 154.5
+        scene.add(object);
 
-      // }, onProgress, onError)
+      }, onProgress, onError)
 
-      // // Model Rock
-      // // manager
+      // Model Rock
+      // manager
 
-      // function loadModel() {
+      function loadModel() {
 
-      //   objectRock.traverse(function (child: any) {
-      //     if (child.isMesh) child.material.map = texture;
-      //   });
+        objectRock.traverse(function (child: any) {
+          if (child.isMesh) child.material.map = texture;
+        });
 
-      //   objectRock.position.y = -15;
-      //   objectRock.position.x = 0;
-      //   objectRock.scale.set(0.07, 0.05, 0.03)
+        objectRock.position.y = -15;
+        objectRock.position.x = 0;
+        objectRock.scale.set(0.07, 0.05, 0.03)
 
-      //   scene.add(objectRock);
+        scene.add(objectRock);
 
-      // }
-      // const manager = new THREE.LoadingManager(loadModel);
-      // // texture Rock
-      // const textureLoader = new THREE.TextureLoader(manager);
-      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
-      // // model Rock
-      // const loaderRock = new FBXLoader(manager);
-      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-      //   objectRock = obj;
-      //   objectRock.rotation.y = 154.5;
-      // },)
+      }
+      const manager = new THREE.LoadingManager(loadModel);
+      // texture Rock
+      const textureLoader = new THREE.TextureLoader(manager);
+      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      // model Rock
+      const loaderRock = new FBXLoader(manager);
+      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+        objectRock = obj;
+        objectRock.rotation.y = 154.5;
+      },onProgress, onError)
 
     }
     // Fonction pour creer les thumbnails
@@ -223,8 +223,7 @@ export class AppComponent {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     container.appendChild(renderer.domElement);
-
-    container.addEventListener('mousemove', onDocumentMouseMove);
+    document.addEventListener('mousemove', onDocumentMouseMove);
     window.addEventListener('resize', onWindowResize);
 
     // Rentre mes objet responsives
@@ -274,12 +273,18 @@ export class AppComponent {
         textSprite.position.set(-50, -100, 20);
         if (boxMesh[i].position.y < 5 && boxMesh[i].position.y > -2) {
           boxMesh[i].add(textSprite);
+          boxMesh[i].rotation.y = 0
+        }
+
+        if(boxMesh[i].position.x < -11 || boxMesh[i].position.x > 11){
+          boxMesh[i].rotation.y = 180
         }
       }
-      if (boxMesh[4].position.y > 5) {
+      if (boxMesh[4].position.y > 25) {
         return
       }else{
         time -= 0.05;
+        time_desc = time;
         boxMesh[0].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
         boxMesh[0].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
         boxMesh[0].position.z = (Math.sin(time) * 10) / 2
@@ -302,9 +307,36 @@ export class AppComponent {
       }
 
     }
+    // function moveAfficheBoxDesc() {
+    //   if (boxMesh[2].position.y < 0 ){
+    //     return
+    //   }else{
+    //     time_desc += 0.05;
+    //     boxMesh[0].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
+    //     boxMesh[0].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
+    //     boxMesh[0].position.z = -(Math.sin(time) * 10) / 2
+
+    //     boxMesh[1].position.x = -((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
+    //     boxMesh[1].position.y = -((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
+    //     boxMesh[1].position.z = -(-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10;
+
+    //     boxMesh[2].position.x = ((Math.cos(time) * 5) / 15) + boxMesh[2].position.x;
+    //     boxMesh[2].position.y = -((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
+
+    //     boxMesh[3].position.x = -((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
+    //     boxMesh[3].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
+    //     boxMesh[3].position.z = (Math.sin(time) * 25) / 10
+
+    //     boxMesh[4].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
+    //     boxMesh[4].position.y = -((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
+    //     boxMesh[4].position.z = -(Math.sin(time) * 10) / 2
+    //     object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
+    //   }
+
+    // }
     // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
-      moveAfficheBox()
+    moveAfficheBox()
 
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -326,6 +358,7 @@ export class AppComponent {
         if (intersected) {
           intersected.material.map = intersected.userData.originalTexture
         }
+        intersected = null
       }
     }
     function animate() {

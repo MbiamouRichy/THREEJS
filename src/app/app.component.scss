@@ -64,12 +64,12 @@ $color4: rgba(255,148,95,1);
   background-color:  $color4;
   text-align: center;
 }
-// .show {
-//   display: inline-block;
-// }
+.show {
+  display: inline-block;
+}
 .base,
 .letters,
-.bottom {
+.Count_loader {
   font-size: 4rem;
   color: transparent;
   font-weight: bold;
@@ -97,12 +97,12 @@ $color4: rgba(255,148,95,1);
 }
 
 
-.bottom,
+.Count_loader,
 .copyright {
   transform: translate(-50%, -50%);
 }
 // counter
-.bottom {
+.Count_loader {
   @include absolute-div(none, none, 5%, 50%);
   color: $color1;
   text-shadow: -1px -1px 0 $color3,
@@ -166,16 +166,15 @@ $color4: rgba(255,148,95,1);
   width: 80vw;
   line-height: 100%;
   -webkit-text-stroke: 1px $color2;
+  overflow: hidden;
 
   div {
     @extend %div-row;
     width: 100%;
     color: $color1;
-    overflow: hidden;
-    scale: 1;
     visibility: hidden;
-    transition: scale 1s ease-in;
-    animation: scale 2.3s ease-in 3.5s forwards;
+    transition: all 1s ease-in;
+    animation: transform 2.3s ease-in 3.5s forwards;
 
   }
   .text-left {
@@ -184,15 +183,13 @@ $color4: rgba(255,148,95,1);
   }
 }
 
-@keyframes scale {
+@keyframes transform {
   from {
-    scale: 0;
-    opacity: 0;
-    visibility: visible
+    transform: translateY(-25px);
+    visibility: visible;
   }
-  to {
-    scale: 1;
-    opacity: 1;
+  to{
+    transform: none;
     visibility: visible
   }
 }
@@ -306,17 +303,7 @@ $color4: rgba(255,148,95,1);
     align-items: center;
     justify-content: center;
   }
-  p.scrollText{
-    font-size:0.7rem;
-    color: $color3;
-    font-weight: 500;
-    flex-wrap: nowrap;
-  }
-}
-.texte_dos svg{
-  width: 25%;
-  height: 80%;
-  fill: $color1;
+
 }
 @keyframes opacity {
   from{
