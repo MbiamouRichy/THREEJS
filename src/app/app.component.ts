@@ -177,17 +177,17 @@ export class AppComponent {
         objectRock.rotation.y = 154.5;
       },onProgress, onError)
 
-    }
+     }
     // Fonction pour creer les thumbnails
     function thumbnail() {
       // Thumbnail
       // Définir la liste des images
       var imageList = [
-        '../assets/thumbnail/desktop.png',
-        '../assets/thumbnail/moi.jpg',
-        '../assets/thumbnail/Rfram.png',
-        '../assets/thumbnail/Richy-design-sketch-name.png',
-        '../assets/thumbnail/richy.png',
+        '../assets/thumbnail/1.png',
+        '../assets/thumbnail/2.png',
+        '../assets/thumbnail/3.png',
+        '../assets/thumbnail/4.png',
+        '../assets/thumbnail/5.png',
       ];
 
       // Créer une texture pour chaque image et enregistrer dans un tableau
@@ -274,10 +274,12 @@ export class AppComponent {
         if (boxMesh[i].position.y < 5 && boxMesh[i].position.y > -2) {
           boxMesh[i].add(textSprite);
           boxMesh[i].rotation.y = 0
+        }else{
+          boxMesh[i].remove(textSprite)
         }
 
         if(boxMesh[i].position.x < -11 || boxMesh[i].position.x > 11){
-          boxMesh[i].rotation.y = 180
+          boxMesh[i].rotation.y = 100
         }
       }
       if (boxMesh[4].position.y > 25) {
@@ -315,8 +317,7 @@ export class AppComponent {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      let intersects = raycaster.intersectObjects(scene.children);
-
+      let intersects = raycaster.intersectObjects(scene.children.filter((obj: THREE.Object3D) => obj !== objectRock && obj !== object))
       // Appliquer la texture en niveaux de gris à l'objet survolé
       if (intersects.length > 0) {
         if (intersected !== intersects[0].object) {
@@ -334,6 +335,7 @@ export class AppComponent {
         }
         intersected = null
       }
+
     }
     function animate() {
       requestAnimationFrame(animate);
