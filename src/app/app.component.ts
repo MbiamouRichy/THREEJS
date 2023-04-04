@@ -291,7 +291,7 @@ export class AppComponent {
 
         boxMesh[1].position.x = ((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
         boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
-        boxMesh[1].position.z = (-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10;
+        boxMesh[1].position.z = -(Math.sin(time) * 7) + boxMesh[1].position.z / 10;
 
         boxMesh[2].position.x = -((Math.cos(time) * 5) / 15) + boxMesh[2].position.x;
         boxMesh[2].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
@@ -307,33 +307,7 @@ export class AppComponent {
       }
 
     }
-    // function moveAfficheBoxDesc() {
-    //   if (boxMesh[2].position.y < 0 ){
-    //     return
-    //   }else{
-    //     time_desc += 0.05;
-    //     boxMesh[0].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
-    //     boxMesh[0].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
-    //     boxMesh[0].position.z = -(Math.sin(time) * 10) / 2
 
-    //     boxMesh[1].position.x = -((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
-    //     boxMesh[1].position.y = -((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
-    //     boxMesh[1].position.z = -(-(Math.sin(time) * 7) / 2) + boxMesh[1].position.z / 10;
-
-    //     boxMesh[2].position.x = ((Math.cos(time) * 5) / 15) + boxMesh[2].position.x;
-    //     boxMesh[2].position.y = -((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
-
-    //     boxMesh[3].position.x = -((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
-    //     boxMesh[3].position.y = -((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
-    //     boxMesh[3].position.z = (Math.sin(time) * 25) / 10
-
-    //     boxMesh[4].position.x = ((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
-    //     boxMesh[4].position.y = -((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
-    //     boxMesh[4].position.z = -(Math.sin(time) * 10) / 2
-    //     object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
-    //   }
-
-    // }
     // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
     moveAfficheBox()
