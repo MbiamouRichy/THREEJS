@@ -64,11 +64,11 @@ export class AppComponent {
     let mouse = new THREE.Vector2();
     let intersected: any;
     let TextBox = [
-      'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail".',
-      'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
-      'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
-      'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
       'J\'ai commence par apprendre \nTHREE.js et j\'ai realise une \nintegration',
+      'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
+      'Puis j\'ai ajouter les elements \ndu designe c-a-d le logo et \nles textes',
+      'Apres j\'ai realise le loader \n et toutes les animations \n du projet',
+      'Et enfin j\'ai fais le plus \n dur pour moi "la thumbnail".',
     ];
     init();
     animate();
@@ -175,9 +175,9 @@ export class AppComponent {
       loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
         objectRock = obj;
         objectRock.rotation.y = 154.5;
-      },onProgress, onError)
+      }, onProgress, onError)
 
-     }
+    }
     // Fonction pour creer les thumbnails
     function thumbnail() {
       // Thumbnail
@@ -194,6 +194,8 @@ export class AppComponent {
       var textures = [];
       for (var i = 0; i < imageList.length; i++) {
         var textureBox = new THREE.TextureLoader().load(imageList[i]);
+        textureBox.repeat.set(1, window.innerHeight / window.innerWidth);
+        textureBox.offset.set(0, 0.2)
         textures.push(textureBox);
       }
       // Créer une boîte pour chaque texture
@@ -206,11 +208,11 @@ export class AppComponent {
         boxMesh.push(boxMeshs)
         scene.add(boxMesh[i]);
       }
-      boxMesh[0].position.set(-16, -15, -20)
+      boxMesh[2].position.set(-16, -15, -20)
 
       boxMesh[1].position.set(18, -11, -20)
 
-      boxMesh[2].position.set(0, 0, 2)
+      boxMesh[0].position.set(0, 0, 2)
 
       boxMesh[3].position.set(16, -30, -20)
 
@@ -274,29 +276,29 @@ export class AppComponent {
         if (boxMesh[i].position.y < 5 && boxMesh[i].position.y > -2) {
           boxMesh[i].add(textSprite);
           boxMesh[i].rotation.y = 0
-        }else{
+        } else {
           boxMesh[i].remove(textSprite)
         }
 
-        if(boxMesh[i].position.x < -11 || boxMesh[i].position.x > 11){
+        if (boxMesh[i].position.x < -11 || boxMesh[i].position.x > 11) {
           boxMesh[i].rotation.y = 100
         }
       }
-      if (boxMesh[4].position.y > 25) {
+      if (boxMesh[4].position.y > 20) {
         return
-      }else{
+      } else {
         time -= 0.05;
         time_desc = time;
-        boxMesh[0].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[0].position.x;
-        boxMesh[0].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[0].position.y;
-        boxMesh[0].position.z = (Math.sin(time) * 10) / 2
+        boxMesh[0].position.x = -((Math.cos(time) * 5) / 15) + boxMesh[0].position.x;
+        boxMesh[0].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[0].position.y;
 
         boxMesh[1].position.x = ((Math.sin(time) * 11) / 15) + boxMesh[1].position.x;
         boxMesh[1].position.y = ((Math.sin(time) / 15) + 0.37) + boxMesh[1].position.y;
         boxMesh[1].position.z = -(Math.sin(time) * 7) + boxMesh[1].position.z / 10;
 
-        boxMesh[2].position.x = -((Math.cos(time) * 5) / 15) + boxMesh[2].position.x;
-        boxMesh[2].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[2].position.y;
+        boxMesh[2].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[2].position.x;
+        boxMesh[2].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[2].position.y;
+        boxMesh[2].position.z = (Math.sin(time) * 10) / 2
 
         boxMesh[3].position.x = ((Math.sin(time) * 25) / 40) + boxMesh[3].position.x;
         boxMesh[3].position.y = ((Math.sin(time) / 15) + 0.2) + boxMesh[3].position.y;
@@ -305,6 +307,7 @@ export class AppComponent {
         boxMesh[4].position.x = -((Math.sin(time) * 13) / 15) + boxMesh[4].position.x;
         boxMesh[4].position.y = ((Math.sin(time) / 15) + 0.23) + boxMesh[4].position.y;
         boxMesh[4].position.z = (Math.sin(time) * 10) / 2
+        //Rotation de l'objer girl et rock
         object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
       }
 
@@ -312,13 +315,13 @@ export class AppComponent {
 
     // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
-    moveAfficheBox()
+      moveAfficheBox()
 
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       let intersects = raycaster.intersectObjects(scene.children.filter((obj: THREE.Object3D) => obj !== objectRock && obj !== object))
-      // Appliquer la texture en niveaux de gris à l'objet survolé
+      // Appliquer la texture en niveau de gris à l'objet survolé
       if (intersects.length > 0) {
         if (intersected !== intersects[0].object) {
           if (intersected) {
@@ -329,7 +332,7 @@ export class AppComponent {
           intersected.userData.originalTexture = intersected.material.map
           intersected.material.map = convertTextureToGrayscale(intersected.material.map)
         }
-      }else {
+      } else {
         if (intersected) {
           intersected.material.map = intersected.userData.originalTexture
         }
