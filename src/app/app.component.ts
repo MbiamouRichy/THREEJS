@@ -59,10 +59,13 @@ export class AppComponent {
     let objectRock: any;
     let boxMesh: any = [];
     let time: number = 0;
-    let time_desc: number = 0;
+    let count: any;
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     let intersected: any;
+    var boxGeometry : any;
+    let times: any = 0
+
     let TextBox = [
       'J\'ai commence par apprendre \nTHREE.js et j\'ai realise une \nintegration',
       'En suite j\'ai commence par \n l\'integration de l\'objet "Girl"\n et son support "l\'objet Rock"',
@@ -129,53 +132,53 @@ export class AppComponent {
       scene.add(pointLight);
 
 
-      // model Girl
-      function onProgress(xhr: any) {
+      // // model Girl
+      // function onProgress(xhr: any) {
 
-        if (xhr.lengthComputable) {
-          const percentComplete: number = xhr.loaded / xhr.total * 100;
-          percent_load = Math.round(percentComplete);
-          Count_loader.textContent = percent_load + '%';
-        }
-        return percent_load;
-      }
-      function onError() { }
+      //   if (xhr.lengthComputable) {
+      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
+      //     percent_load = Math.round(percentComplete);
+      //     Count_loader.textContent = percent_load + '%';
+      //   }
+      //   return percent_load;
+      // }
+      // function onError() { }
 
-      const loader = new FBXLoader();
-      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-        object = obj;
-        object.position.y = 8.5
-        object.rotation.y = 154.5
-        scene.add(object);
+      // const loader = new FBXLoader();
+      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+      //   object = obj;
+      //   object.position.y = 8.5
+      //   object.rotation.y = 154.5
+      //   scene.add(object);
 
-      }, onProgress, onError)
+      // }, onProgress, onError)
 
-      // Model Rock
-      // manager
+      // // Model Rock
+      // // manager
 
-      function loadModel() {
+      // function loadModel() {
 
-        objectRock.traverse(function (child: any) {
-          if (child.isMesh) child.material.map = texture;
-        });
+      //   objectRock.traverse(function (child: any) {
+      //     if (child.isMesh) child.material.map = texture;
+      //   });
 
-        objectRock.position.y = -15;
-        objectRock.position.x = 0;
-        objectRock.scale.set(0.07, 0.05, 0.03)
+      //   objectRock.position.y = -15;
+      //   objectRock.position.x = 0;
+      //   objectRock.scale.set(0.07, 0.05, 0.03)
 
-        scene.add(objectRock);
+      //   scene.add(objectRock);
 
-      }
-      const manager = new THREE.LoadingManager(loadModel);
-      // texture Rock
-      const textureLoader = new THREE.TextureLoader(manager);
-      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
-      // model Rock
-      const loaderRock = new FBXLoader(manager);
-      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-        objectRock = obj;
-        objectRock.rotation.y = 154.5;
-      }, onProgress, onError)
+      // }
+      // const manager = new THREE.LoadingManager(loadModel);
+      // // texture Rock
+      // const textureLoader = new THREE.TextureLoader(manager);
+      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      // // model Rock
+      // const loaderRock = new FBXLoader(manager);
+      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+      //   objectRock = obj;
+      //   objectRock.rotation.y = 154.5;
+      // }, onProgress, onError)
 
     }
     // Fonction pour creer les thumbnails
@@ -201,12 +204,13 @@ export class AppComponent {
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
 
-        var boxGeometry = new THREE.BoxGeometry(220, 220, 0);
+        boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
         boxMeshs.scale.set(0.05, 0.03, 0.1)
         boxMesh.push(boxMeshs)
         scene.add(boxMesh[i]);
+
       }
       boxMesh[2].position.set(-16, -15, -20)
 
@@ -288,7 +292,6 @@ export class AppComponent {
         return
       } else {
         time -= 0.05;
-        time_desc = time;
         boxMesh[0].position.x = -((Math.cos(time) * 5) / 15) + boxMesh[0].position.x;
         boxMesh[0].position.y = ((Math.sin(time) / 10) + 0.4) + boxMesh[0].position.y;
 
@@ -340,7 +343,21 @@ export class AppComponent {
       }
 
     }
+    count = boxMesh.length;
+
     function animate() {
+      times += 0.05
+      for(let i = 0; i < count; i++){
+        const x = boxMesh[i].position.x
+        const y = boxMesh[i].position.y
+
+        const anim1 = 0.25 * Math.sin(x * times * 0.7)
+        const anim2 = 0.25 * Math.sin(x * 1 + times * 0.7)
+        const anim3 = 0.25 * Math.sin(y * 15 +times * 0.7)
+        boxMesh[i].position.z(1, anim1, anim1 + anim2+ anim3)
+        boxMesh[i].computeVertexNormals()
+        boxMesh[i].position.needsUpdate = true
+      }
       requestAnimationFrame(animate);
       render()
     }
