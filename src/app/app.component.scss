@@ -15,7 +15,7 @@ $letters-colors: (
 $color1: #fff;
 $color2: black;
 $color3: #222;
-$color4: rgba(255,148,95,1);
+$color4: rgba(255, 148, 95, 1);
 
 // Les mixins
 @mixin absolute-div($top, $right, $bottom, $left) {
@@ -44,8 +44,8 @@ $color4: rgba(255,148,95,1);
   align-items: flex-start;
 }
 /*================================= Bg-gradient ===========================*/
-#bg-gradient{
-  background: radial-gradient(circle,$color1, $color4);
+#bg-gradient {
+  background: radial-gradient(circle, $color1, $color4);
   background-position: center;
   mix-blend-mode: exclusion;
   @include absolute-div(0, none, none, 0);
@@ -61,12 +61,12 @@ $color4: rgba(255,148,95,1);
   height: 100vh;
   width: 100vw;
   display: none;
-  background-color:  $color4;
+  background-color: $color4;
   text-align: center;
 }
-// .show {
-//   display: inline-block;
-// }
+.show {
+  display: inline-block;
+}
 .base,
 .letters,
 .Count_loader {
@@ -80,7 +80,6 @@ $color4: rgba(255,148,95,1);
   transform: translate(-50%, -50%);
   animation: loader 1.5s ease-in-out infinite;
   -webkit-text-stroke: 1px $color2;
-
 }
 @keyframes loader {
   50% {
@@ -88,14 +87,12 @@ $color4: rgba(255,148,95,1);
   }
 }
 
-
 @for $i from 1 through 7 {
   .fl-#{$i} {
     animation-delay: - calc($i / 10 * 1s);
-    color: map.get($letters-colors, "c#{$i}")
+    color: map.get($letters-colors, "c#{$i}");
   }
 }
-
 
 .Count_loader,
 .copyright {
@@ -105,11 +102,8 @@ $color4: rgba(255,148,95,1);
 .Count_loader {
   @include absolute-div(none, none, 5%, 50%);
   color: $color1;
-  text-shadow: -1px -1px 0 $color3,
-  1px -1px 0 $color3,
-   -1px 1px 0 $color3,
-   1px 1px 0 $color3,
-    4px 4px 0 $color3;
+  text-shadow: -1px -1px 0 $color3, 1px -1px 0 $color3, -1px 1px 0 $color3,
+    1px 1px 0 $color3, 4px 4px 0 $color3;
 }
 
 .copyright {
@@ -136,16 +130,15 @@ $color4: rgba(255,148,95,1);
     overflow: hidden;
 
     span {
-      @include relative-div(2rem, none, none, none);
+      @include relative-div(1.8rem, none, none, none);
       font-size: 1rem;
       color: $color2;
       font-weight: bold;
       line-height: 100%;
-      transition: top 1s ease-in;
+      transition: all 0.5s cubic-bezier(0.5, 0, 0.3, 0.7);
       visibility: hidden;
-      animation: appear-top 2.5s ease-in-out 4s forwards;
+      animation: appear-top 0.5s ease-in-out 4s forwards;
       color: $color1;
-
     }
   }
 }
@@ -153,7 +146,7 @@ $color4: rgba(255,148,95,1);
 @keyframes appear-top {
   to {
     top: 0;
-    visibility: visible
+    visibility: visible;
   }
 }
 
@@ -173,9 +166,8 @@ $color4: rgba(255,148,95,1);
     width: 100%;
     color: $color1;
     visibility: hidden;
-    transition: all 1s ease-in;
-    animation: transform 2.3s ease-in 3.5s forwards;
-
+    transition: all 0.5s cubic-bezier(0.5, 0, 0.3, 0.7);
+    animation: transform 0.5s ease-in 3.5s forwards;
   }
   .text-left {
     align-items: flex-end;
@@ -188,9 +180,9 @@ $color4: rgba(255,148,95,1);
     transform: translateY(-25px);
     visibility: visible;
   }
-  to{
+  to {
     transform: none;
-    visibility: visible
+    visibility: visible;
   }
 }
 
@@ -200,9 +192,9 @@ $color4: rgba(255,148,95,1);
   @extend %div-col;
   align-items: flex-end;
   z-index: 5;
-  transition: left 1s ease-in;
+  transition: all 0.5s cubic-bezier(0.5, 0, 0.3, 0.7);
   visibility: hidden;
-  animation: block-left 2s ease 3s forwards ;
+  animation: block-left 0.5s ease 3s forwards;
 
   p {
     font-size: 0.7rem;
@@ -210,9 +202,7 @@ $color4: rgba(255,148,95,1);
     color: $color1;
     padding-left: 5rem;
     margin-bottom: 1.25rem;
-    text-shadow: -4px -4px 1 $color2,
-    -2px 2px 1 $color2;
-
+    text-shadow: -4px -4px 1 $color2, -2px 2px 1 $color2;
   }
   .btn-explore {
     border-bottom: 0.5px solid $color1;
@@ -223,18 +213,16 @@ $color4: rgba(255,148,95,1);
     line-height: 1.125rem;
     padding-bottom: 0.3rem;
     color: $color1;
-    text-shadow: -2px 2px 1 $color2
-    -4px 4px 1 $color2;
+    text-shadow: -2px 2px 1 $color2 -4px 4px 1 $color2;
     cursor: pointer;
-
   }
 }
 @keyframes block-left {
-  from{
+  from {
     left: -30%;
     visibility: visible;
   }
-  to{
+  to {
     left: 5%;
     visibility: visible;
   }
@@ -250,8 +238,8 @@ $color4: rgba(255,148,95,1);
     height: 20px;
     scale: 1;
     visibility: hidden;
-    transition: scale 1s ease-in;
-    animation: svg-appear 1s ease-in 2.5s forwards;
+    transition: all 0.5s cubic-bezier(0.5, 0, 0.3, 0.7);
+    animation: svg-appear 0.5s ease-in 2.5s forwards;
     svg {
       width: 100%;
       height: 100%;
@@ -260,19 +248,19 @@ $color4: rgba(255,148,95,1);
   }
 }
 @keyframes svg-appear {
- from{
-  scale: 0;
-  visibility: visible;
- }
- to{
-  scale: 1;
-  visibility: visible;
- }
+  from {
+    scale: 0;
+    visibility: visible;
+  }
+  to {
+    scale: 1;
+    visibility: visible;
+  }
 }
 
 /*================================== DRAG OR SCROLL ===================================*/
 
-.dragORscroll{
+.dragORscroll {
   @include absolute-div(50%, none, none, 50%);
   transform: translate(-50%, -50%);
   @extend %div-row;
@@ -282,39 +270,39 @@ $color4: rgba(255,148,95,1);
   width: 90vw;
   gap: 5px;
   display: none;
-  animation: opacity 2s ease-in forwards;
-  hr.souligne{
+  transition: all 0.5s cubic-bezier(0.5, 0, 0.3, 0.7);
+  animation: opacity 0.5s ease-in 2s forwards;
+  hr.souligne {
     width: 35%;
     background-color: $color1;
     height: 5px;
     border: 0.01px solid $color2;
   }
 }
-.texte_dos{
+.texte_dos {
   @extend %div-col;
   align-items: center;
   justify-content: center;
-  h1.drag{
+  h1.drag {
     color: $color1;
-    font-size: calc(100vw/ 10);
+    font-size: calc(100vw / 10);
     -webkit-text-stroke: 1px $color2;
     font-weight: bold;
     @extend %div-row;
     align-items: center;
     justify-content: center;
   }
-
 }
 @keyframes opacity {
-  from{
+  from {
     opacity: 1;
   }
-  to{
+  to {
     opacity: 0;
   }
 }
 @media only screen and (max-width: 614px) {
-  .texte_dos p.scrollText{
+  .texte_dos p.scrollText {
     display: none;
   }
 }
