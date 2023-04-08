@@ -204,7 +204,7 @@ export class AppComponent {
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
 
-        boxGeometry = new THREE.BoxGeometry(220, 220, 0);
+        boxGeometry = new THREE.PlaneGeometry(220, 220, 50);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
         boxMeshs.scale.set(0.05, 0.03, 0.1)
@@ -313,6 +313,13 @@ export class AppComponent {
         //Rotation de l'objer girl et rock
         object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
       }
+
+      const clock = new THREE.Clock();
+      const times = clock.getElapsedTime();
+        boxMesh[1].geometry.vertices.map((v: any) => {
+          v.z = 0.5 * Math.sin(v.x * 2 + times);
+        });
+        boxMesh[1].geometry.verticesNeedUpdate = true;
 
     }
 
