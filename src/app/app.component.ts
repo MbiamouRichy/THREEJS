@@ -132,53 +132,53 @@ export class AppComponent {
       scene.add(pointLight);
 
 
-      // // model Girl
-      // function onProgress(xhr: any) {
+      // model Girl
+      function onProgress(xhr: any) {
 
-      //   if (xhr.lengthComputable) {
-      //     const percentComplete: number = xhr.loaded / xhr.total * 100;
-      //     percent_load = Math.round(percentComplete);
-      //     Count_loader.textContent = percent_load + '%';
-      //   }
-      //   return percent_load;
-      // }
-      // function onError() { }
+        if (xhr.lengthComputable) {
+          const percentComplete: number = xhr.loaded / xhr.total * 100;
+          percent_load = Math.round(percentComplete);
+          Count_loader.textContent = percent_load + '%';
+        }
+        return percent_load;
+      }
+      function onError() { }
 
-      // const loader = new FBXLoader();
-      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-      //   object = obj;
-      //   object.position.y = 8.5
-      //   object.rotation.y = 154.5
-      //   scene.add(object);
+      const loader = new FBXLoader();
+      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+        object = obj;
+        object.position.y = 8.5
+        object.rotation.y = 154.5
+        scene.add(object);
 
-      // }, onProgress, onError)
+      }, onProgress, onError)
 
-      // // Model Rock
-      // // manager
+      // Model Rock
+      // manager
 
-      // function loadModel() {
+      function loadModel() {
 
-      //   objectRock.traverse(function (child: any) {
-      //     if (child.isMesh) child.material.map = texture;
-      //   });
+        objectRock.traverse(function (child: any) {
+          if (child.isMesh) child.material.map = texture;
+        });
 
-      //   objectRock.position.y = -15;
-      //   objectRock.position.x = 0;
-      //   objectRock.scale.set(0.07, 0.05, 0.03)
+        objectRock.position.y = -15;
+        objectRock.position.x = 0;
+        objectRock.scale.set(0.07, 0.05, 0.03)
 
-      //   scene.add(objectRock);
+        scene.add(objectRock);
 
-      // }
-      // const manager = new THREE.LoadingManager(loadModel);
-      // // texture Rock
-      // const textureLoader = new THREE.TextureLoader(manager);
-      // const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
-      // // model Rock
-      // const loaderRock = new FBXLoader(manager);
-      // loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
-      //   objectRock = obj;
-      //   objectRock.rotation.y = 154.5;
-      // }, onProgress, onError)
+      }
+      const manager = new THREE.LoadingManager(loadModel);
+      // texture Rock
+      const textureLoader = new THREE.TextureLoader(manager);
+      const texture = textureLoader.load('../assets/sandstone-cliff/source/Low_Bake1_pbrs2a_diffuse.jpg');
+      // model Rock
+      const loaderRock = new FBXLoader(manager);
+      loaderRock.load('../assets/sandstone-cliff/source/rock_10.fbx', function (obj: any) {
+        objectRock = obj;
+        objectRock.rotation.y = 154.5;
+      }, onProgress, onError)
 
     }
     // Fonction pour creer les thumbnails
@@ -204,7 +204,7 @@ export class AppComponent {
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
 
-        boxGeometry = new THREE.PlaneGeometry(220, 220, 50);
+        boxGeometry = new THREE.BoxGeometry(220, 220, 0);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
         boxMeshs.scale.set(0.05, 0.03, 0.1)
@@ -313,14 +313,6 @@ export class AppComponent {
         //Rotation de l'objer girl et rock
         object.rotation.y = objectRock.rotation.y = object.rotation.y - 0.01
       }
-
-      const clock = new THREE.Clock();
-      const times = clock.getElapsedTime();
-        boxMesh[1].geometry.vertices.map((v: any) => {
-          v.z = 0.5 * Math.sin(v.x * 2 + times);
-        });
-        boxMesh[1].geometry.verticesNeedUpdate = true;
-
     }
 
     // Fonction de l'venement qui ecoute le deplacement de la souris
