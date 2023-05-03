@@ -202,7 +202,7 @@ export class AppComponent {
       // Créer une boîte pour chaque texture
       for (var i = 0; i < textures.length; i++) {
 
-        boxGeometry = new THREE.BoxGeometry(220, 220, 0);
+        boxGeometry = new THREE.PlaneGeometry(100, 100, 50, 30);
         var boxMaterial = new THREE.MeshBasicMaterial({ map: textures[i] });
         var boxMeshs = new THREE.Mesh(boxGeometry, boxMaterial);
         boxMeshs.scale.set(0.05, 0.03, 0.1)
@@ -316,7 +316,20 @@ export class AppComponent {
     // Fonction de l'venement qui ecoute le deplacement de la souris
     function onDocumentMouseMove(event: any) {
       moveAfficheBox()
+      var t = Date.now() * 0.006;
 
+    //   for (var i = 0; i < boxGeometry.attributes.position.array.length; i += 3) {
+    //     const mouve1 =
+    //       2 * Math.sin(boxGeometry.attributes.position.array[i] * 4 + t);
+    //     const mouve3 =
+    //       0.25 * Math.sin(boxGeometry.attributes.position.array[i + 1] * 5 + t + 2);
+    //     const fixed1 = (boxGeometry.attributes.position.array[i] - 2.5) / 5
+    //     const fixed2 = (boxGeometry.attributes.position.array[i] + 2.5) / 5
+    //     boxMesh[0].boxGeometry.attributes.position.array[i + 2] = (mouve1 + mouve3) * fixed1 * fixed2;
+    //   }
+    // boxMesh[0].boxGeometry.attributes.position.needsUpdate = true;
+    // boxMesh[0].boxGeometry.computeVertexNormals();
+    // boxMesh[0].boxGeometry.verticesNeedUpdate = true;
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
@@ -340,21 +353,7 @@ export class AppComponent {
       }
 
     }
-    count = boxMesh.length;
-
     function animate() {
-      times += 0.05
-      for(let i = 0; i < count; i++){
-        const x = boxMesh[i].position.x
-        const y = boxMesh[i].position.y
-
-        const anim1 = 0.25 * Math.sin(x * times * 0.7)
-        const anim2 = 0.25 * Math.sin(x * 1 + times * 0.7)
-        const anim3 = 0.25 * Math.sin(y * 15 +times * 0.7)
-        boxMesh[i].position.z(1, anim1, anim1 + anim2+ anim3)
-        boxMesh[i].computeVertexNormals()
-        boxMesh[i].position.needsUpdate = true
-      }
       requestAnimationFrame(animate);
       render()
     }
