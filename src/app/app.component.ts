@@ -130,7 +130,6 @@ export class AppComponent {
       scene.add(pointLight);
 
 
-      // model Girl
       function onProgress(xhr: any) {
 
         if (xhr.lengthComputable) {
@@ -141,15 +140,16 @@ export class AppComponent {
         return percent_load;
       }
       function onError() { }
+      // model Girl
 
-      const loader = new FBXLoader();
-      loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
-        object = obj;
-        object.position.y = 8.5
-        object.rotation.y = 154.5
-        scene.add(object);
+      // const loader = new FBXLoader();
+      // loader.load('../assets/Merged_PolySphere_4553.fbx', function (obj: any) {
+      //   object = obj;
+      //   object.position.y = 8.5
+      //   object.rotation.y = 154.5
+      //   scene.add(object);
 
-      }, onProgress, onError)
+      // }, onProgress, onError)
 
       // Model Rock
       // manager
